@@ -1,2 +1,2 @@
-# theses-api-diffusion
-Cette API permet de mettre à disposition les fichiers des thèses.
+# theses-diffusion
+Permet de diffuser le texte intégral des thèses accessibles en ligne.
