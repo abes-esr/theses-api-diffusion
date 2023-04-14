@@ -28,7 +28,7 @@ RUN mvn --batch-mode -e \
 ###
 # Image pour le module theses-diffusion
 
-FROM eclipse-temurin:17-jre as diffusion-image
+FROM eclipse-temurin:17-jre as api-diffusion-image
 WORKDIR /app/
-COPY --from=build-image /build/target/*.jar /app/theses-diffusion.jar
-ENTRYPOINT ["java","-jar","/app/theses-diffusion.jar"]
+COPY --from=build-image /build/target/*.jar /app/theses-api-diffusion.jar
+ENTRYPOINT ["java","-jar","/app/theses-api-diffusion.jar"]
