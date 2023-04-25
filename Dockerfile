@@ -15,6 +15,7 @@ ENV LC_ALL fr_FR.UTF-8
 # On débute par une mise en cache docker des dépendances Java
 # cf https://www.baeldung.com/ops/docker-cache-maven-dependencies
 COPY ./pom.xml /build/pom.xml
+COPY ./src/main/resources/74979_GERARDIN_2018_archivage.pdf /
 RUN mvn verify --fail-never
 # et la compilation du code Java
 COPY ./src/   /build/src/
@@ -31,4 +32,5 @@ RUN mvn --batch-mode -e \
 FROM eclipse-temurin:17-jre as api-diffusion-image
 WORKDIR /app/
 COPY --from=build-image /build/target/*.jar /app/theses-api-diffusion.jar
+COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
 ENTRYPOINT ["java","-jar","/app/theses-api-diffusion.jar"]
