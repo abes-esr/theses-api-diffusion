@@ -33,4 +33,4 @@ FROM eclipse-temurin:17-jre as api-diffusion-image
 WORKDIR /app/
 COPY --from=build-image /build/target/*.jar /app/theses-api-diffusion.jar
 COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
-ENTRYPOINT ["java","-jar","/app/theses-api-diffusion.jar"]
+ENTRYPOINT exec java $JAVA_OPTS -jar /app/theses-api-diffusion.jar
