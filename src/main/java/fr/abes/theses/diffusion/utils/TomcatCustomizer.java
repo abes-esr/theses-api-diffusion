@@ -14,7 +14,7 @@ public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServle
         server.addConnectorCustomizers((connector) -> {
             ProtocolHandler handler = connector.getProtocolHandler();
             AbstractHttp11Protocol protocol = (AbstractHttp11Protocol) handler;
-            protocol.setMaxHttpResponseHeaderSize(50000);
+            protocol.setMaxHeaderCount(500);
 
         });
     }
