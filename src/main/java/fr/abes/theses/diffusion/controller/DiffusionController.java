@@ -39,7 +39,7 @@ public class DiffusionController {
     @GetMapping(value = "document/protected/{nnt}")
     public ResponseEntity<byte[]> documentProtected(@PathVariable String nnt) throws Exception {
         log.info("protection passée pour ".concat(nnt));
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return getFichier();
     }
     @GetMapping(value = "document/{nnt}")
     public ResponseEntity<byte[]> document(
