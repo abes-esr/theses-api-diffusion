@@ -22,6 +22,10 @@ public class These {
         this.marshall = marshall;
     }
 
+    /**
+     * Charge le tef dans la structure d'objets Java
+     * @throws Exception
+     */
     public void initTef() throws Exception {
         tef = marshall.chargerMets(new ByteArrayInputStream(this.getDoc().getBytes()));
     }
