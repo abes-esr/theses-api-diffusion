@@ -2,13 +2,22 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2023.03.30 à 04:09:25 PM CEST 
+// Généré le : 2023.04.27 à 04:33:45 PM CEST 
 //
 
 
 package fr.abes.theses.diffusion.model.tef;
 
-import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -193,13 +202,13 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *                                                       &lt;complexContent>
  *                                                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                                           &lt;sequence>
- *                                                             &lt;element name="urlEtabDiffuseur" form="unqualified">
+ *                                                             &lt;element name="urlEtabDiffuseur" maxOccurs="unbounded" form="unqualified">
  *                                                               &lt;complexType>
- *                                                                 &lt;complexContent>
- *                                                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                                                                 &lt;simpleContent>
+ *                                                                   &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
  *                                                                     &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
- *                                                                   &lt;/restriction>
- *                                                                 &lt;/complexContent>
+ *                                                                   &lt;/extension>
+ *                                                                 &lt;/simpleContent>
  *                                                               &lt;/complexType>
  *                                                             &lt;/element>
  *                                                           &lt;/sequence>
@@ -409,10 +418,10 @@ public class XmlData {
      * 
      * @return
      *     possible object is
-     *     {@link StarGestion }
+     *     {@link XmlData.StarGestion }
      *     
      */
-    public StarGestion getStarGestion() {
+    public XmlData.StarGestion getStarGestion() {
         return starGestion;
     }
 
@@ -421,10 +430,10 @@ public class XmlData {
      * 
      * @param value
      *     allowed object is
-     *     {@link StarGestion }
+     *     {@link XmlData.StarGestion }
      *     
      */
-    public void setStarGestion(StarGestion value) {
+    public void setStarGestion(XmlData.StarGestion value) {
         this.starGestion = value;
     }
 
@@ -433,10 +442,10 @@ public class XmlData {
      * 
      * @return
      *     possible object is
-     *     {@link StepGestion }
+     *     {@link XmlData.StepGestion }
      *     
      */
-    public StepGestion getStepGestion() {
+    public XmlData.StepGestion getStepGestion() {
         return stepGestion;
     }
 
@@ -445,10 +454,10 @@ public class XmlData {
      * 
      * @param value
      *     allowed object is
-     *     {@link StepGestion }
+     *     {@link XmlData.StepGestion }
      *     
      */
-    public void setStepGestion(StepGestion value) {
+    public void setStepGestion(XmlData.StepGestion value) {
         this.stepGestion = value;
     }
 
@@ -623,13 +632,13 @@ public class XmlData {
      *                                           &lt;complexContent>
      *                                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                                               &lt;sequence>
-     *                                                 &lt;element name="urlEtabDiffuseur" form="unqualified">
+     *                                                 &lt;element name="urlEtabDiffuseur" maxOccurs="unbounded" form="unqualified">
      *                                                   &lt;complexType>
-     *                                                     &lt;complexContent>
-     *                                                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                                                     &lt;simpleContent>
+     *                                                       &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
      *                                                         &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
-     *                                                       &lt;/restriction>
-     *                                                     &lt;/complexContent>
+     *                                                       &lt;/extension>
+     *                                                     &lt;/simpleContent>
      *                                                   &lt;/complexType>
      *                                                 &lt;/element>
      *                                               &lt;/sequence>
@@ -769,10 +778,10 @@ public class XmlData {
          * 
          * @return
          *     possible object is
-         *     {@link Traitements }
+         *     {@link XmlData.StarGestion.Traitements }
          *     
          */
-        public Traitements getTraitements() {
+        public XmlData.StarGestion.Traitements getTraitements() {
             return traitements;
         }
 
@@ -781,10 +790,10 @@ public class XmlData {
          * 
          * @param value
          *     allowed object is
-         *     {@link Traitements }
+         *     {@link XmlData.StarGestion.Traitements }
          *     
          */
-        public void setTraitements(Traitements value) {
+        public void setTraitements(XmlData.StarGestion.Traitements value) {
             this.traitements = value;
         }
 
@@ -1122,13 +1131,13 @@ public class XmlData {
          *                                 &lt;complexContent>
          *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *                                     &lt;sequence>
-         *                                       &lt;element name="urlEtabDiffuseur" form="unqualified">
+         *                                       &lt;element name="urlEtabDiffuseur" maxOccurs="unbounded" form="unqualified">
          *                                         &lt;complexType>
-         *                                           &lt;complexContent>
-         *                                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                                           &lt;simpleContent>
+         *                                             &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
          *                                               &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
-         *                                             &lt;/restriction>
-         *                                           &lt;/complexContent>
+         *                                             &lt;/extension>
+         *                                           &lt;/simpleContent>
          *                                         &lt;/complexType>
          *                                       &lt;/element>
          *                                     &lt;/sequence>
@@ -1257,10 +1266,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Entree }
+             *     {@link XmlData.StarGestion.Traitements.Entree }
              *     
              */
-            public Entree getEntree() {
+            public XmlData.StarGestion.Traitements.Entree getEntree() {
                 return entree;
             }
 
@@ -1269,10 +1278,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Entree }
+             *     {@link XmlData.StarGestion.Traitements.Entree }
              *     
              */
-            public void setEntree(Entree value) {
+            public void setEntree(XmlData.StarGestion.Traitements.Entree value) {
                 this.entree = value;
             }
 
@@ -1281,10 +1290,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Step }
+             *     {@link XmlData.StarGestion.Traitements.Step }
              *     
              */
-            public Step getStep() {
+            public XmlData.StarGestion.Traitements.Step getStep() {
                 return step;
             }
 
@@ -1293,10 +1302,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Step }
+             *     {@link XmlData.StarGestion.Traitements.Step }
              *     
              */
-            public void setStep(Step value) {
+            public void setStep(XmlData.StarGestion.Traitements.Step value) {
                 this.step = value;
             }
 
@@ -1305,10 +1314,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Maj }
+             *     {@link XmlData.StarGestion.Traitements.Maj }
              *     
              */
-            public Maj getMaj() {
+            public XmlData.StarGestion.Traitements.Maj getMaj() {
                 return maj;
             }
 
@@ -1317,10 +1326,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Maj }
+             *     {@link XmlData.StarGestion.Traitements.Maj }
              *     
              */
-            public void setMaj(Maj value) {
+            public void setMaj(XmlData.StarGestion.Traitements.Maj value) {
                 this.maj = value;
             }
 
@@ -1329,10 +1338,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Facile }
+             *     {@link XmlData.StarGestion.Traitements.Facile }
              *     
              */
-            public Facile getFacile() {
+            public XmlData.StarGestion.Traitements.Facile getFacile() {
                 return facile;
             }
 
@@ -1341,10 +1350,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Facile }
+             *     {@link XmlData.StarGestion.Traitements.Facile }
              *     
              */
-            public void setFacile(Facile value) {
+            public void setFacile(XmlData.StarGestion.Traitements.Facile value) {
                 this.facile = value;
             }
 
@@ -1353,10 +1362,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link CtrlUrl }
+             *     {@link XmlData.StarGestion.Traitements.CtrlUrl }
              *     
              */
-            public CtrlUrl getCtrlUrl() {
+            public XmlData.StarGestion.Traitements.CtrlUrl getCtrlUrl() {
                 return ctrlUrl;
             }
 
@@ -1365,10 +1374,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link CtrlUrl }
+             *     {@link XmlData.StarGestion.Traitements.CtrlUrl }
              *     
              */
-            public void setCtrlUrl(CtrlUrl value) {
+            public void setCtrlUrl(XmlData.StarGestion.Traitements.CtrlUrl value) {
                 this.ctrlUrl = value;
             }
 
@@ -1377,10 +1386,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link RemonteeArchive }
+             *     {@link XmlData.StarGestion.Traitements.RemonteeArchive }
              *     
              */
-            public RemonteeArchive getRemonteeArchive() {
+            public XmlData.StarGestion.Traitements.RemonteeArchive getRemonteeArchive() {
                 return remonteeArchive;
             }
 
@@ -1389,10 +1398,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link RemonteeArchive }
+             *     {@link XmlData.StarGestion.Traitements.RemonteeArchive }
              *     
              */
-            public void setRemonteeArchive(RemonteeArchive value) {
+            public void setRemonteeArchive(XmlData.StarGestion.Traitements.RemonteeArchive value) {
                 this.remonteeArchive = value;
             }
 
@@ -1401,10 +1410,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Purge }
+             *     {@link XmlData.StarGestion.Traitements.Purge }
              *     
              */
-            public Purge getPurge() {
+            public XmlData.StarGestion.Traitements.Purge getPurge() {
                 return purge;
             }
 
@@ -1413,10 +1422,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Purge }
+             *     {@link XmlData.StarGestion.Traitements.Purge }
              *     
              */
-            public void setPurge(Purge value) {
+            public void setPurge(XmlData.StarGestion.Traitements.Purge value) {
                 this.purge = value;
             }
 
@@ -1425,10 +1434,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Invalidation }
+             *     {@link XmlData.StarGestion.Traitements.Invalidation }
              *     
              */
-            public Invalidation getInvalidation() {
+            public XmlData.StarGestion.Traitements.Invalidation getInvalidation() {
                 return invalidation;
             }
 
@@ -1437,10 +1446,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Invalidation }
+             *     {@link XmlData.StarGestion.Traitements.Invalidation }
              *     
              */
-            public void setInvalidation(Invalidation value) {
+            public void setInvalidation(XmlData.StarGestion.Traitements.Invalidation value) {
                 this.invalidation = value;
             }
 
@@ -1449,10 +1458,10 @@ public class XmlData {
              * 
              * @return
              *     possible object is
-             *     {@link Sorties }
+             *     {@link XmlData.StarGestion.Traitements.Sorties }
              *     
              */
-            public Sorties getSorties() {
+            public XmlData.StarGestion.Traitements.Sorties getSorties() {
                 return sorties;
             }
 
@@ -1461,10 +1470,10 @@ public class XmlData {
              * 
              * @param value
              *     allowed object is
-             *     {@link Sorties }
+             *     {@link XmlData.StarGestion.Traitements.Sorties }
              *     
              */
-            public void setSorties(Sorties value) {
+            public void setSorties(XmlData.StarGestion.Traitements.Sorties value) {
                 this.sorties = value;
             }
 
@@ -2583,13 +2592,13 @@ public class XmlData {
              *                       &lt;complexContent>
              *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
              *                           &lt;sequence>
-             *                             &lt;element name="urlEtabDiffuseur" form="unqualified">
+             *                             &lt;element name="urlEtabDiffuseur" maxOccurs="unbounded" form="unqualified">
              *                               &lt;complexType>
-             *                                 &lt;complexContent>
-             *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                                 &lt;simpleContent>
+             *                                   &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
              *                                     &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
-             *                                   &lt;/restriction>
-             *                                 &lt;/complexContent>
+             *                                   &lt;/extension>
+             *                                 &lt;/simpleContent>
              *                               &lt;/complexType>
              *                             &lt;/element>
              *                           &lt;/sequence>
@@ -2693,10 +2702,10 @@ public class XmlData {
                  * 
                  * @return
                  *     possible object is
-                 *     {@link Cines }
+                 *     {@link XmlData.StarGestion.Traitements.Sorties.Cines }
                  *     
                  */
-                public Cines getCines() {
+                public XmlData.StarGestion.Traitements.Sorties.Cines getCines() {
                     return cines;
                 }
 
@@ -2705,10 +2714,10 @@ public class XmlData {
                  * 
                  * @param value
                  *     allowed object is
-                 *     {@link Cines }
+                 *     {@link XmlData.StarGestion.Traitements.Sorties.Cines }
                  *     
                  */
-                public void setCines(Cines value) {
+                public void setCines(XmlData.StarGestion.Traitements.Sorties.Cines value) {
                     this.cines = value;
                 }
 
@@ -2717,10 +2726,10 @@ public class XmlData {
                  * 
                  * @return
                  *     possible object is
-                 *     {@link Sudoc }
+                 *     {@link XmlData.StarGestion.Traitements.Sorties.Sudoc }
                  *     
                  */
-                public Sudoc getSudoc() {
+                public XmlData.StarGestion.Traitements.Sorties.Sudoc getSudoc() {
                     return sudoc;
                 }
 
@@ -2729,10 +2738,10 @@ public class XmlData {
                  * 
                  * @param value
                  *     allowed object is
-                 *     {@link Sudoc }
+                 *     {@link XmlData.StarGestion.Traitements.Sorties.Sudoc }
                  *     
                  */
-                public void setSudoc(Sudoc value) {
+                public void setSudoc(XmlData.StarGestion.Traitements.Sorties.Sudoc value) {
                     this.sudoc = value;
                 }
 
@@ -2741,10 +2750,10 @@ public class XmlData {
                  * 
                  * @return
                  *     possible object is
-                 *     {@link Diffusion }
+                 *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion }
                  *     
                  */
-                public Diffusion getDiffusion() {
+                public XmlData.StarGestion.Traitements.Sorties.Diffusion getDiffusion() {
                     return diffusion;
                 }
 
@@ -2753,10 +2762,10 @@ public class XmlData {
                  * 
                  * @param value
                  *     allowed object is
-                 *     {@link Diffusion }
+                 *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion }
                  *     
                  */
-                public void setDiffusion(Diffusion value) {
+                public void setDiffusion(XmlData.StarGestion.Traitements.Sorties.Diffusion value) {
                     this.diffusion = value;
                 }
 
@@ -2909,13 +2918,13 @@ public class XmlData {
                  *             &lt;complexContent>
                  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
                  *                 &lt;sequence>
-                 *                   &lt;element name="urlEtabDiffuseur" form="unqualified">
+                 *                   &lt;element name="urlEtabDiffuseur" maxOccurs="unbounded" form="unqualified">
                  *                     &lt;complexType>
-                 *                       &lt;complexContent>
-                 *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *                       &lt;simpleContent>
+                 *                         &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
                  *                           &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
-                 *                         &lt;/restriction>
-                 *                       &lt;/complexContent>
+                 *                         &lt;/extension>
+                 *                       &lt;/simpleContent>
                  *                     &lt;/complexType>
                  *                   &lt;/element>
                  *                 &lt;/sequence>
@@ -3034,10 +3043,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link EtabDiffuseur }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur }
                      *     
                      */
-                    public EtabDiffuseur getEtabDiffuseur() {
+                    public XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur getEtabDiffuseur() {
                         return etabDiffuseur;
                     }
 
@@ -3046,10 +3055,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link EtabDiffuseur }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur }
                      *     
                      */
-                    public void setEtabDiffuseur(EtabDiffuseur value) {
+                    public void setEtabDiffuseur(XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur value) {
                         this.etabDiffuseur = value;
                     }
 
@@ -3058,10 +3067,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link AbesDiffuseur }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.AbesDiffuseur }
                      *     
                      */
-                    public AbesDiffuseur getAbesDiffuseur() {
+                    public XmlData.StarGestion.Traitements.Sorties.Diffusion.AbesDiffuseur getAbesDiffuseur() {
                         return abesDiffuseur;
                     }
 
@@ -3070,10 +3079,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link AbesDiffuseur }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.AbesDiffuseur }
                      *     
                      */
-                    public void setAbesDiffuseur(AbesDiffuseur value) {
+                    public void setAbesDiffuseur(XmlData.StarGestion.Traitements.Sorties.Diffusion.AbesDiffuseur value) {
                         this.abesDiffuseur = value;
                     }
 
@@ -3082,10 +3091,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link Ccsd }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.Ccsd }
                      *     
                      */
-                    public Ccsd getCcsd() {
+                    public XmlData.StarGestion.Traitements.Sorties.Diffusion.Ccsd getCcsd() {
                         return ccsd;
                     }
 
@@ -3094,10 +3103,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link Ccsd }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.Ccsd }
                      *     
                      */
-                    public void setCcsd(Ccsd value) {
+                    public void setCcsd(XmlData.StarGestion.Traitements.Sorties.Diffusion.Ccsd value) {
                         this.ccsd = value;
                     }
 
@@ -3106,10 +3115,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link AutresEtabDiffuseurs }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.AutresEtabDiffuseurs }
                      *     
                      */
-                    public AutresEtabDiffuseurs getAutresEtabDiffuseurs() {
+                    public XmlData.StarGestion.Traitements.Sorties.Diffusion.AutresEtabDiffuseurs getAutresEtabDiffuseurs() {
                         return autresEtabDiffuseurs;
                     }
 
@@ -3118,10 +3127,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link AutresEtabDiffuseurs }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.AutresEtabDiffuseurs }
                      *     
                      */
-                    public void setAutresEtabDiffuseurs(AutresEtabDiffuseurs value) {
+                    public void setAutresEtabDiffuseurs(XmlData.StarGestion.Traitements.Sorties.Diffusion.AutresEtabDiffuseurs value) {
                         this.autresEtabDiffuseurs = value;
                     }
 
@@ -3130,10 +3139,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link Oai }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.Oai }
                      *     
                      */
-                    public Oai getOai() {
+                    public XmlData.StarGestion.Traitements.Sorties.Diffusion.Oai getOai() {
                         return oai;
                     }
 
@@ -3142,10 +3151,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link Oai }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.Oai }
                      *     
                      */
-                    public void setOai(Oai value) {
+                    public void setOai(XmlData.StarGestion.Traitements.Sorties.Diffusion.Oai value) {
                         this.oai = value;
                     }
 
@@ -3777,13 +3786,13 @@ public class XmlData {
                      *   &lt;complexContent>
                      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
                      *       &lt;sequence>
-                     *         &lt;element name="urlEtabDiffuseur" form="unqualified">
+                     *         &lt;element name="urlEtabDiffuseur" maxOccurs="unbounded" form="unqualified">
                      *           &lt;complexType>
-                     *             &lt;complexContent>
-                     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                     *             &lt;simpleContent>
+                     *               &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
                      *                 &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
-                     *               &lt;/restriction>
-                     *             &lt;/complexContent>
+                     *               &lt;/extension>
+                     *             &lt;/simpleContent>
                      *           &lt;/complexType>
                      *         &lt;/element>
                      *       &lt;/sequence>
@@ -3804,7 +3813,7 @@ public class XmlData {
                     public static class EtabDiffuseur {
 
                         @XmlElement(namespace = "", required = true)
-                        protected XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur urlEtabDiffuseur;
+                        protected List<XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur> urlEtabDiffuseur;
                         @XmlAttribute(name = "editeurScientifiqueLieu", required = true)
                         @XmlSchemaType(name = "anySimpleType")
                         protected String editeurScientifiqueLieu;
@@ -3817,27 +3826,32 @@ public class XmlData {
                         protected String etabDiffuseurPolEtablissement;
 
                         /**
-                         * Obtient la valeur de la propriété urlEtabDiffuseur.
+                         * Gets the value of the urlEtabDiffuseur property.
                          * 
-                         * @return
-                         *     possible object is
-                         *     {@link UrlEtabDiffuseur }
-                         *     
-                         */
-                        public UrlEtabDiffuseur getUrlEtabDiffuseur() {
-                            return urlEtabDiffuseur;
-                        }
-
-                        /**
-                         * Définit la valeur de la propriété urlEtabDiffuseur.
+                         * <p>
+                         * This accessor method returns a reference to the live list,
+                         * not a snapshot. Therefore any modification you make to the
+                         * returned list will be present inside the JAXB object.
+                         * This is why there is not a <CODE>set</CODE> method for the urlEtabDiffuseur property.
                          * 
-                         * @param value
-                         *     allowed object is
-                         *     {@link UrlEtabDiffuseur }
-                         *     
+                         * <p>
+                         * For example, to add a new item, do as follows:
+                         * <pre>
+                         *    getUrlEtabDiffuseur().add(newItem);
+                         * </pre>
+                         * 
+                         * 
+                         * <p>
+                         * Objects of the following type(s) are allowed in the list
+                         * {@link XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur }
+                         * 
+                         * 
                          */
-                        public void setUrlEtabDiffuseur(UrlEtabDiffuseur value) {
-                            this.urlEtabDiffuseur = value;
+                        public List<XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur> getUrlEtabDiffuseur() {
+                            if (urlEtabDiffuseur == null) {
+                                urlEtabDiffuseur = new ArrayList<XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur>();
+                            }
+                            return this.urlEtabDiffuseur;
                         }
 
                         /**
@@ -3920,23 +3934,52 @@ public class XmlData {
                          * 
                          * <pre>
                          * &lt;complexType>
-                         *   &lt;complexContent>
-                         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                         *   &lt;simpleContent>
+                         *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>anyURI">
                          *       &lt;attribute name="majUrlEtabDiffuseur" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
-                         *     &lt;/restriction>
-                         *   &lt;/complexContent>
+                         *     &lt;/extension>
+                         *   &lt;/simpleContent>
                          * &lt;/complexType>
                          * </pre>
                          * 
                          * 
                          */
                         @XmlAccessorType(XmlAccessType.FIELD)
-                        @XmlType(name = "")
+                        @XmlType(name = "", propOrder = {
+                            "value"
+                        })
                         public static class UrlEtabDiffuseur {
 
+                            @XmlValue
+                            @XmlSchemaType(name = "anyURI")
+                            protected String value;
                             @XmlAttribute(name = "majUrlEtabDiffuseur", required = true)
                             @XmlSchemaType(name = "anySimpleType")
                             protected String majUrlEtabDiffuseur;
+
+                            /**
+                             * Obtient la valeur de la propriété value.
+                             * 
+                             * @return
+                             *     possible object is
+                             *     {@link String }
+                             *     
+                             */
+                            public String getValue() {
+                                return value;
+                            }
+
+                            /**
+                             * Définit la valeur de la propriété value.
+                             * 
+                             * @param value
+                             *     allowed object is
+                             *     {@link String }
+                             *     
+                             */
+                            public void setValue(String value) {
+                                this.value = value;
+                            }
 
                             /**
                              * Obtient la valeur de la propriété majUrlEtabDiffuseur.
@@ -4180,10 +4223,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link RCR }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Sudoc.RCR }
                      *     
                      */
-                    public RCR getRCR() {
+                    public XmlData.StarGestion.Traitements.Sorties.Sudoc.RCR getRCR() {
                         return rcr;
                     }
 
@@ -4192,10 +4235,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link RCR }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Sudoc.RCR }
                      *     
                      */
-                    public void setRCR(RCR value) {
+                    public void setRCR(XmlData.StarGestion.Traitements.Sorties.Sudoc.RCR value) {
                         this.rcr = value;
                     }
 
@@ -4204,10 +4247,10 @@ public class XmlData {
                      * 
                      * @return
                      *     possible object is
-                     *     {@link EPN }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Sudoc.EPN }
                      *     
                      */
-                    public EPN getEPN() {
+                    public XmlData.StarGestion.Traitements.Sorties.Sudoc.EPN getEPN() {
                         return epn;
                     }
 
@@ -4216,10 +4259,10 @@ public class XmlData {
                      * 
                      * @param value
                      *     allowed object is
-                     *     {@link EPN }
+                     *     {@link XmlData.StarGestion.Traitements.Sorties.Sudoc.EPN }
                      *     
                      */
-                    public void setEPN(EPN value) {
+                    public void setEPN(XmlData.StarGestion.Traitements.Sorties.Sudoc.EPN value) {
                         this.epn = value;
                     }
 

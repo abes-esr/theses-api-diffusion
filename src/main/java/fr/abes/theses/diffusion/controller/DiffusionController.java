@@ -2,12 +2,13 @@ package fr.abes.theses.diffusion.controller;
 
 import fr.abes.theses.diffusion.database.Service;
 import fr.abes.theses.diffusion.database.These;
-import fr.abes.theses.diffusion.model.tef.DmdSec;
-import fr.abes.theses.diffusion.model.tef.Mets;
+import fr.abes.theses.diffusion.service.ServiceFichiers;
+import fr.abes.theses.diffusion.service.VerificationDroits;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.time.LocalDate;
-import java.util.Optional;
+import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
@@ -27,99 +25,76 @@ public class DiffusionController {
 
     @Autowired
     Service service;
+    @Autowired
+    ServiceFichiers serviceFichiers;
+    @Autowired
+    VerificationDroits verificationDroits;
 
-    @GetMapping("/redirectWithRedirectView")
-    public RedirectView redirectWithUsingRedirectView(
-            RedirectAttributes attributes) {
-        attributes.addFlashAttribute("flashAttribute", "redirectWithRedirectView");
-        attributes.addAttribute("attribute", "redirectWithRedirectView");
-        return new RedirectView("redirectedUrl");
-    }
-
+    /**
+     * Renvoie les thèses disponibles en accès restreint Abes
+     * @param nnt
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value = "document/protected/{nnt}")
     public ResponseEntity<byte[]> documentProtected(@PathVariable String nnt) throws Exception {
         log.info("protection passée pour ".concat(nnt));
-        return getFichier();
+        return serviceFichiers.getFichier();
+
+        /*this.renvoyerFichier(response);
+        return ResponseEntity.status(HttpStatus.OK).build();*/
     }
+
+    /**
+     * Renvoie les thèses disponibles en accès libre
+     * @param nnt
+     * @return
+     * @throws Exception
+     */
     @GetMapping(value = "document/{nnt}")
     public ResponseEntity<byte[]> document(
             @PathVariable
-            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt) throws Exception {
+            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt, HttpServletResponse response) throws Exception {
 
-        nnt = nnt.toUpperCase();
+        nnt = verificationDroits.verifieNnt(nnt);
         These these = service.findTheseByNnt(nnt);
         these.initTef();
-        String scenario = this.getScenario(these.getTef(), nnt);
-        if (scenario.equals("cas1") && this.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
+        String scenario = verificationDroits.getScenario(these.getTef(), nnt);
+        if ((scenario.equals("cas1") || scenario.equals("cas2"))
+                && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
 
-        }
-        if (scenario.equals("cas2") && this.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
+            // diffusion par l'établissement
+            if (verificationDroits.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
+                return ResponseEntity.status(HttpStatus.OK).build();
+            // diffusion par le CCSD
+            if (verificationDroits.diffusionCcsd(these.getTef(), nnt, response))
+                return ResponseEntity.status(HttpStatus.OK).build();
 
+            // diffusion par l'Abes
         }
+
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
-    private String getScenario(Mets tef, String nnt) throws Exception {
-        try {
-            Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
-            if (starGestion.isPresent()) {
-                return starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getScenario();
-            }
-        } catch (NullPointerException e) {
-            log.error("Erreur pour récupérer le scenario de ".concat(nnt).concat(e.getMessage()));
-            throw e;
-        }
-        throw new Exception("scenario absent");
-    }
-    private Boolean restrictionsTemporellesOkPourAccesEnLigne(Mets tef, String nnt) throws Exception {
+    /**
+     * Renvoie le lien de téléchargement du fichier pour le CCSD
+     * @param nnt
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "document/ccsd/{nnt}")
+    public ResponseEntity<byte[]> documentPourCcsd(
+            @PathVariable
+            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt) throws Exception {
 
-        String restrictionTemporelleType;
-        String restrictionTemporelleFin;
+        nnt = verificationDroits.verifieNnt(nnt);
+        These these = service.findTheseByNnt(nnt);
+        these.initTef();
+        String scenario = verificationDroits.getScenario(these.getTef(), nnt);
+        if ((scenario.equals("cas1") || scenario.equals("cas2"))
+                && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
 
-        log.info("Récupération de restriction temporelle type ");
-        try {
-            if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
-                    .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getRestrictionTemporelleType().isEmpty())
-                restrictionTemporelleType = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
-                        .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getRestrictionTemporelleType();
-            else
-                throw new Exception("restriction temporelle type est vide");
-        } catch (NullPointerException e) {
-            log.error("Erreur pour récupérer la restriction temporelle type de " + nnt + "," + e.getMessage());
-            throw e;
         }
-
-        log.info("Récupération de restriction temporelle fin ");
-        try {
-            if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
-                    .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getRestrictionTemporelleFin().isEmpty())
-                restrictionTemporelleFin = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
-                        .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getRestrictionTemporelleFin();
-            else
-                throw new Exception("restriction temporelle fin est vide");
-        } catch (NullPointerException e) {
-            log.error("Erreur pour récupérer la restriction temporelle fin de " + nnt + "," + e.getMessage());
-            throw e;
-        }
-
-        if (restrictionTemporelleType.equals("sansObjet"))
-            return true;
-        if (
-                (restrictionTemporelleType.equals("embargo")
-                || restrictionTemporelleType.equals("confidentialite")
-                || restrictionTemporelleType.equals("confEmbargo"))
-        && (LocalDate.parse(restrictionTemporelleFin).isBefore(LocalDate.now())))
-        {
-            return true;
-        }
-        return false;
-    }
-    private ResponseEntity<byte[]> getFichier() throws Exception {
-        File file = new File("/74979_GERARDIN_2018_archivage.pdf");
-        byte[] bytes = Files.readAllBytes(file.toPath());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("74979_GERARDIN_2018_archivage.pdf").build().toString());
-        return ResponseEntity.ok().headers(httpHeaders).body(bytes);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 }
