@@ -1,10 +1,14 @@
 package fr.abes.theses.diffusion.service;
 
+import fr.abes.theses.diffusion.database.Service;
+import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Mets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +24,10 @@ import java.util.Optional;
 @Component
 public class VerificationDroits {
 
+    @Autowired
+    Service service;
+    @Autowired
+    ServiceFichiers serviceFichiers;
     @Value("${tel.userId}")
     String loginTel;
     @Value("${tel.password}")
@@ -162,6 +170,13 @@ public class VerificationDroits {
         return false;
     }
 
+    public ResponseEntity<byte[]> getFichierProtege() throws Exception {
+        return serviceFichiers.getFichier();
+
+        /*this.renvoyerFichier(response);
+        return ResponseEntity.status(HttpStatus.OK).build();*/
+    }
+
     public String verifieNnt(String nnt) throws Exception {
         nnt = nnt.toUpperCase();
         if (nnt.length()!=12)
@@ -264,4 +279,10 @@ public class VerificationDroits {
         return url;
     }
 
+    public These renvoieThese(String nnt) throws Exception {
+        nnt = this.verifieNnt(nnt);
+        These these = service.findTheseByNnt(nnt);
+        these.initTef();
+        return these;
+    }
 }

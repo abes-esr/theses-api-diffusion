@@ -21,7 +21,12 @@ import java.nio.file.Files;
 @Component
 public class ServiceFichiers {
 
-
+    /**
+     * fournit le fichieur de thèse
+     * uniquement utilisé lorsque le fichier est stocké / diffusé par l'Abes
+     * @return
+     * @throws Exception
+     */
     public ResponseEntity<byte[]> getFichier() throws Exception {
         File file = new File("/74979_GERARDIN_2018_archivage.pdf");
         byte[] bytes = Files.readAllBytes(file.toPath());

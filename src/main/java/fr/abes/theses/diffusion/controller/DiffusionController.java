@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,10 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/")
 public class DiffusionController {
 
-    @Autowired
-    Service service;
-    @Autowired
-    ServiceFichiers serviceFichiers;
     @Autowired
     VerificationDroits verificationDroits;
 
@@ -39,10 +33,7 @@ public class DiffusionController {
     @GetMapping(value = "document/protected/{nnt}")
     public ResponseEntity<byte[]> documentProtected(@PathVariable String nnt) throws Exception {
         log.info("protection passée pour ".concat(nnt));
-        return serviceFichiers.getFichier();
-
-        /*this.renvoyerFichier(response);
-        return ResponseEntity.status(HttpStatus.OK).build();*/
+        return verificationDroits.getFichierProtege();
     }
 
     /**
@@ -56,9 +47,7 @@ public class DiffusionController {
             @PathVariable
             @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt, HttpServletResponse response) throws Exception {
 
-        nnt = verificationDroits.verifieNnt(nnt);
-        These these = service.findTheseByNnt(nnt);
-        these.initTef();
+        These these = verificationDroits.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
         if ((scenario.equals("cas1") || scenario.equals("cas2"))
                 && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
@@ -87,9 +76,7 @@ public class DiffusionController {
             @PathVariable
             @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt) throws Exception {
 
-        nnt = verificationDroits.verifieNnt(nnt);
-        These these = service.findTheseByNnt(nnt);
-        these.initTef();
+        These these = verificationDroits.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
         if ((scenario.equals("cas1") || scenario.equals("cas2"))
                 && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
