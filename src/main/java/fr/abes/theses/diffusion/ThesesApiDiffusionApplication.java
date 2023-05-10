@@ -13,6 +13,7 @@ import java.util.Collections;
 
 @SpringBootApplication
 public class ThesesApiDiffusionApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(ThesesApiDiffusionApplication.class, args);
     }
@@ -32,7 +33,8 @@ public class ThesesApiDiffusionApplication {
         FilterRegistrationBean bean = new FilterRegistrationBean<>(new CorsFilter(source));
         bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return bean;
-    }}
+    }
+}
 
 
 
