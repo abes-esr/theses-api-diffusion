@@ -58,8 +58,10 @@ public class DiffusionController {
             // diffusion par le CCSD
             if (verificationDroits.diffusionCcsd(these.getTef(), nnt, response))
                 return ResponseEntity.status(HttpStatus.OK).build();
-
             // diffusion par l'Abes
+            return new ResponseEntity<>(verificationDroits.diffusionAbes(these.getTef(), nnt, response), HttpStatus.OK);
+            // si rien, redirect sur la page de métadonnées /nnt
+
         }
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
