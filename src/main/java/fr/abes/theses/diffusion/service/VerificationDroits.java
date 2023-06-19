@@ -38,9 +38,11 @@ public class VerificationDroits {
     String pwdTel;
     @Value("${tel.hostSword}")
     String apiTel;
-
     @Value("${portail.url}")
     String urlPortail;
+
+    @Value("${theses.path.local}")
+    String thesesPathLocal;
 
     public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt, HttpServletResponse response) {
 
@@ -122,7 +124,6 @@ public class VerificationDroits {
 
     public byte[] diffusionAbes (Mets tef, String nnt, HttpServletResponse response) throws Exception {
 
-        String volumeStock = "/volumes/starstock/";
         String codeEtab = "";
         String scenario = "";
         String idThese = "";
@@ -136,7 +137,7 @@ public class VerificationDroits {
                 idThese = starGestion.get().getMdWrap().getXmlData().getStarGestion().getIDTHESE();
             }
 
-            String chemin = volumeStock + codeEtab + "/" + idThese + "/document/"; // "/THESE_"
+            String chemin = thesesPathLocal + codeEtab + "/" + idThese + "/document/"; // "/THESE_"
             String rep = "";
             if (scenario.equals("cas1")) {
                 rep = "0/0/";

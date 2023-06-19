@@ -1,6 +1,5 @@
 package fr.abes.theses.diffusion.service;
 
-import fr.abes.theses.diffusion.model.tef.Mets;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
