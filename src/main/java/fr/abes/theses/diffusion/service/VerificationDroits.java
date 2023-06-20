@@ -12,12 +12,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -34,6 +38,11 @@ public class VerificationDroits {
     String pwdTel;
     @Value("${tel.hostSword}")
     String apiTel;
+    @Value("${portail.url}")
+    String urlPortail;
+
+    @Value("${theses.path.local}")
+    String thesesPathLocal;
 
     public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt, HttpServletResponse response) {
 
@@ -112,6 +121,61 @@ public class VerificationDroits {
             throw new RuntimeException(e);
         }
     }
+
+    public byte[] diffusionAbes (Mets tef, String nnt, HttpServletResponse response) throws Exception {
+
+        String codeEtab = "";
+        String scenario = "";
+        String idThese = "";
+
+        try {
+            Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
+            if (starGestion.isPresent()) {
+
+                codeEtab = starGestion.get().getMdWrap().getXmlData().getStarGestion().getCodeEtab();
+                scenario = this.getScenario(tef, nnt);
+                idThese = starGestion.get().getMdWrap().getXmlData().getStarGestion().getIDTHESE();
+            }
+
+            String chemin = thesesPathLocal + codeEtab + "/" + idThese + "/document/"; // "/THESE_"
+            String rep = "";
+            if (scenario.equals("cas1")) {
+                rep = "0/0/";
+            } else if (scenario.equals("cas2")) {
+                rep = "0/1/";
+            }
+            chemin += rep;
+            log.info("Diffusion => Abes diffuseur : scenario=" + scenario + " chemin=" + chemin);
+            if (!rep.equals("")) {
+                List<String> liste = new ArrayList<>();
+                serviceFichiers.listerFichiers(chemin, liste);
+                if (liste.size() > 0) {
+                    // Renvoie l'unique fichier du répertoire
+                    if (liste.size() == 1) {
+                        log.info("un seul fichier dans le répertoire :" + liste.get(0));
+                        serviceFichiers.renvoyerFichier(response, liste.get(0));
+                    } else { // Sinon renvoie la liste des
+                        // fichiers
+                        String listeFichiers = "";
+                        listeFichiers = "<ul class='listeFichiers'>";
+                        for (String fichier : liste) {
+                            String nomFic = fichier.substring(fichier.indexOf("document") + 13)
+                                    .replace("\\", "/");
+                            listeFichiers += "<li><a href=\"" + urlPortail + nnt + "/abes/"
+                                    + nomFic.replaceAll(" ", "_-_") + "\">" + nomFic + "</a></li>";
+                        }
+                        listeFichiers += "</ul>";
+                        return listeFichiers.getBytes();
+                    }
+                }
+            }
+        return "Ce fichier n'a pas pu être trouvé".getBytes();
+        } catch (Exception e) {
+            log.error("erreur dans diffusionAbes : " + e);
+            throw e;
+        }
+    }
+
 
     public String getScenario(Mets tef, String nnt) throws Exception {
         try {
