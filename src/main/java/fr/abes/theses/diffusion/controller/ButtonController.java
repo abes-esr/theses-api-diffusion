@@ -26,25 +26,31 @@ public class ButtonController {
     VerificationDroits verificationDroits;
 
     @GetMapping(value = "button/{nnt}")
-    public ResponseButtons buttons(@PathVariable String nnt) throws Exception {
+    public ResponseEntity<ResponseButtons> buttons(@PathVariable String nnt) throws Exception {
 
-        ResponseButtons responseButtons = new ResponseButtons();
-        List<Button> buttonList = new ArrayList<>();
-        responseButtons.setButtons(buttonList);
+        try {
+            ResponseButtons responseButtons = new ResponseButtons();
+            List<Button> buttonList = new ArrayList<>();
+            responseButtons.setButtons(buttonList);
 
-        These these = verificationDroits.renvoieThese(nnt);
-        String scenario = verificationDroits.getScenario(these.getTef(), nnt);
+            These these = verificationDroits.renvoieThese(nnt);
+            String scenario = verificationDroits.getScenario(these.getTef(), nnt);
 
-        if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
+            if ((scenario.equals("cas1") || scenario.equals("cas2"))
+                    && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
 
-            Button button = new Button();
-            button.setLibelle("Accès en ligne");
-            button.setUrl("/document/".concat(verificationDroits.verifieNnt(nnt)));
-            button.setButtonType(ButtonType.ACCES_LIGNE);
-            buttonList.add(button);
+                Button button = new Button();
+                button.setLibelle("Accès en ligne");
+                button.setUrl("/document/".concat(verificationDroits.verifieNnt(nnt)));
+                button.setButtonType(ButtonType.ACCES_LIGNE);
+                buttonList.add(button);
 
+            }
+            return new ResponseEntity<>(responseButtons, HttpStatus.OK);
         }
-        return responseButtons;
+        catch (Exception e) {
+            log.error(e.toString());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
