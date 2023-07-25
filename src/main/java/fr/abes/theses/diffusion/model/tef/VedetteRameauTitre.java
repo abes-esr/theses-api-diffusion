@@ -10,10 +10,8 @@ package fr.abes.theses.diffusion.model.tef;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -27,9 +25,9 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.loc.gov/METS/}mdWrap" minOccurs="0"/>
+ *         &lt;element ref="{http://www.abes.fr/abes/documents/tef}elementdEntree"/>
+ *         &lt;element ref="{http://www.abes.fr/abes/documents/tef}subdivision"/>
  *       &lt;/sequence>
- *       &lt;attribute name="ID" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -39,63 +37,63 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "mdWrap"
+    "elementdEntree",
+    "subdivision"
 })
-@XmlRootElement(name = "techMD", namespace = "http://www.loc.gov/METS/")
-public class TechMD {
+@XmlRootElement(name = "vedetteRameauTitre")
+public class VedetteRameauTitre {
 
-    @XmlElement(namespace = "http://www.loc.gov/METS/")
-    protected MdWrap mdWrap;
-    @XmlAttribute(name = "ID")
-    @XmlSchemaType(name = "anySimpleType")
-    protected String id;
+    @XmlElement(required = true)
+    protected ElementdEntree elementdEntree;
+    @XmlElement(required = true)
+    protected Subdivision subdivision;
 
     /**
-     * Obtient la valeur de la propriété mdWrap.
+     * Obtient la valeur de la propriété elementdEntree.
      * 
      * @return
      *     possible object is
-     *     {@link MdWrap }
+     *     {@link ElementdEntree }
      *     
      */
-    public MdWrap getMdWrap() {
-        return mdWrap;
+    public ElementdEntree getElementdEntree() {
+        return elementdEntree;
     }
 
     /**
-     * Définit la valeur de la propriété mdWrap.
+     * Définit la valeur de la propriété elementdEntree.
      * 
      * @param value
      *     allowed object is
-     *     {@link MdWrap }
+     *     {@link ElementdEntree }
      *     
      */
-    public void setMdWrap(MdWrap value) {
-        this.mdWrap = value;
+    public void setElementdEntree(ElementdEntree value) {
+        this.elementdEntree = value;
     }
 
     /**
-     * Obtient la valeur de la propriété id.
+     * Obtient la valeur de la propriété subdivision.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Subdivision }
      *     
      */
-    public String getID() {
-        return id;
+    public Subdivision getSubdivision() {
+        return subdivision;
     }
 
     /**
-     * Définit la valeur de la propriété id.
+     * Définit la valeur de la propriété subdivision.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Subdivision }
      *     
      */
-    public void setID(String value) {
-        this.id = value;
+    public void setSubdivision(Subdivision value) {
+        this.subdivision = value;
     }
 
 }

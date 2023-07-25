@@ -1,10 +1,6 @@
 package fr.abes.theses.diffusion.service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletOutputStream;
@@ -16,7 +12,6 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.file.Files;
 import java.util.List;
 
 @Slf4j
@@ -24,20 +19,11 @@ import java.util.List;
 public class ServiceFichiers {
 
     /**
-     * fournit le fichieur de thèse
+     * fournit le fichier de thèse
      * uniquement utilisé lorsque le fichier est stocké / diffusé par l'Abes
      * @return
      * @throws Exception
      */
-    public ResponseEntity<byte[]> getFichier() throws Exception {
-        File file = new File("/74979_GERARDIN_2018_archivage.pdf");
-        byte[] bytes = Files.readAllBytes(file.toPath());
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        httpHeaders.set(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("74979_GERARDIN_2018_archivage.pdf").build().toString());
-        return ResponseEntity.ok().headers(httpHeaders).body(bytes);
-    }
-
     public void renvoyerFichier(HttpServletResponse response, String fichier) throws Exception {
 
         log.info("début de renvoyerFichier, fichier : " + fichier);
@@ -65,12 +51,7 @@ public class ServiceFichiers {
                     response.setContentType("audio/mp4a-latm");
                 }
 
-                String nomFichier = fichier.substring(fichier.lastIndexOf("/") + 1).replaceAll(" ", "_-_");
-
-                nomFichier = nomFichier.substring(0, nomFichier.lastIndexOf("."));
-                nomFichier = nomFichier.replaceAll("[^A-Za-z0-9\\-\\_]", "");
-                String extensionFichier = fichier.substring(fichier.lastIndexOf("."));
-                nomFichier = nomFichier + extensionFichier;
+                String nomFichier = this.extraitNomFichier(fichier);
 
                 log.info("dans renvoyerFichier, le nomFichier avec extension est : " + nomFichier);
 
@@ -113,6 +94,16 @@ public class ServiceFichiers {
             }
         }
     }
+
+    private String extraitNomFichier (String cheminFichier) {
+
+        String nomFichier = cheminFichier.substring(cheminFichier.lastIndexOf("/") + 1).replaceAll(" ", "_-_");
+        nomFichier = nomFichier.substring(0, nomFichier.lastIndexOf("."));
+        nomFichier = nomFichier.replaceAll("[^A-Za-z0-9\\-\\_]", "");
+        String extensionFichier = cheminFichier.substring(cheminFichier.lastIndexOf("."));
+        nomFichier = nomFichier + extensionFichier;
+        return nomFichier;
+    }
     public static String renvoieTypeDocUrl(String urlDoc) throws IOException {
         // note : se base uniquement sur l'extension
         // préfixer les chemins locaux avec le protocole "file:///"
@@ -134,23 +125,6 @@ public class ServiceFichiers {
         return type;
     }
 
-    private void renvoyerFichier(HttpServletResponse response) throws Exception {
-        File file = new File("/74979_GERARDIN_2018_archivage.pdf");
-        ServletOutputStream stream = response.getOutputStream();
-        response.setContentLength((int) file.length());
-        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("74979_GERARDIN_2018_archivage.pdf").build().toString());
-        FileInputStream fs = new FileInputStream(file.getAbsolutePath());
-        byte[] buf = new byte[4 * 1024];
-        int bytesRead;
-        while ((bytesRead = fs.read(buf)) != -1) {
-            stream.write(buf, 0, bytesRead);
-        }
-        stream.flush();
-        stream.close();
-        response.flushBuffer();
-    }
-
     /**
      * Liste tous les fichiers d'un répertoire (même les sous-répertoires)
      */
@@ -169,5 +143,4 @@ public class ServiceFichiers {
             }
         }
     }
-
 }

@@ -2,8 +2,9 @@ package fr.abes.theses.diffusion.controller;
 
 import fr.abes.theses.diffusion.database.Service;
 import fr.abes.theses.diffusion.database.These;
-import fr.abes.theses.diffusion.service.ServiceFichiers;
+import fr.abes.theses.diffusion.service.Diffusion;
 import fr.abes.theses.diffusion.service.VerificationDroits;
+import fr.abes.theses.diffusion.utils.TypeAcces;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class DiffusionController {
 
     @Autowired
     VerificationDroits verificationDroits;
+    @Autowired
+    Diffusion diffusion;
+
+    @Autowired
+    Service service;
 
     /**
      * Renvoie les thèses disponibles en accès restreint Abes
@@ -31,9 +37,17 @@ public class DiffusionController {
      * @throws Exception
      */
     @GetMapping(value = "document/protected/{nnt}")
-    public ResponseEntity<byte[]> documentProtected(@PathVariable String nnt) throws Exception {
+    public ResponseEntity<byte[]> documentProtected(
+            @PathVariable
+            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt, HttpServletResponse response) throws Exception {
+
         log.info("protection passée pour ".concat(nnt));
-        return verificationDroits.getFichierProtege();
+        These these = service.renvoieThese(nnt);
+
+        if (verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_ESR)) {
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     /**
@@ -47,20 +61,20 @@ public class DiffusionController {
             @PathVariable
             @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt, HttpServletResponse response) throws Exception {
 
-        These these = verificationDroits.renvoieThese(nnt);
+        These these = service.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
-        if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
+        if ((scenario.equals("cas1") || scenario.equals("cas2")
+                || scenario.equals("cas3") || scenario.equals("cas4"))
+                && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_EN_LIGNE)) {
 
             // diffusion par l'établissement
-            if (verificationDroits.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
                 return ResponseEntity.status(HttpStatus.OK).build();
             // diffusion par le CCSD
-            if (verificationDroits.diffusionCcsd(these.getTef(), nnt, response))
+            if (diffusion.diffusionCcsd(these.getTef(), nnt, response))
                 return ResponseEntity.status(HttpStatus.OK).build();
             // diffusion par l'Abes
-            return new ResponseEntity<>(verificationDroits.diffusionAbes(these.getTef(), nnt, response), HttpStatus.OK);
-            // si rien, redirect sur la page de métadonnées /nnt
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_EN_LIGNE, response), HttpStatus.OK);
 
         }
 
@@ -78,10 +92,10 @@ public class DiffusionController {
             @PathVariable
             @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt) throws Exception {
 
-        These these = verificationDroits.renvoieThese(nnt);
+        These these = service.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
         if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
+                && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_CCSD)) {
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

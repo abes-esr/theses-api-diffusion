@@ -3,8 +3,10 @@ package fr.abes.theses.diffusion.controller;
 import fr.abes.theses.diffusion.buttons.Button;
 import fr.abes.theses.diffusion.buttons.ButtonType;
 import fr.abes.theses.diffusion.buttons.ResponseButtons;
+import fr.abes.theses.diffusion.database.Service;
 import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.service.VerificationDroits;
+import fr.abes.theses.diffusion.utils.TypeAcces;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +27,9 @@ public class ButtonController {
     @Autowired
     VerificationDroits verificationDroits;
 
+    @Autowired
+    Service service;
+
     @GetMapping(value = "button/{nnt}")
     public ResponseEntity<ResponseButtons> buttons(@PathVariable String nnt) throws Exception {
 
@@ -33,15 +38,15 @@ public class ButtonController {
             List<Button> buttonList = new ArrayList<>();
             responseButtons.setButtons(buttonList);
 
-            These these = verificationDroits.renvoieThese(nnt);
+            These these = service.renvoieThese(nnt);
             String scenario = verificationDroits.getScenario(these.getTef(), nnt);
 
             if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                    && verificationDroits.restrictionsTemporellesOkPourAccesEnLigne(these.getTef(), nnt)) {
+                    && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_EN_LIGNE)) {
 
                 Button button = new Button();
                 button.setLibelle("Accès en ligne");
-                button.setUrl("/document/".concat(verificationDroits.verifieNnt(nnt)));
+                button.setUrl("/document/".concat(service.verifieNnt(nnt)));
                 button.setButtonType(ButtonType.ACCES_LIGNE);
                 buttonList.add(button);
 
