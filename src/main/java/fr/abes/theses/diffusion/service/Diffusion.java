@@ -168,10 +168,11 @@ public class Diffusion {
     private String versionADiffuser(String scenario, TypeAcces typeAcces) {
 
         String rep ="";
+        boolean accesEnLigneEtAccesESR = typeAcces.equals(TypeAcces.ACCES_EN_LIGNE) || typeAcces.equals(TypeAcces.ACCES_ESR);
 
-        if (scenario.equals("cas1") && typeAcces.equals(TypeAcces.ACCES_EN_LIGNE)) {
+        if (scenario.equals("cas1") && accesEnLigneEtAccesESR) {
             rep = "0/0/";
-        } else if (scenario.equals("cas2") && typeAcces.equals(TypeAcces.ACCES_EN_LIGNE)) {
+        } else if (scenario.equals("cas2") && accesEnLigneEtAccesESR) {
             rep = "0/1/";
         } else if (scenario.equals("cas3") && typeAcces.equals(TypeAcces.ACCES_EN_LIGNE)) {
             rep = "1/0/";
