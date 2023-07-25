@@ -73,8 +73,12 @@ public class VerificationDroits {
         if (
             // encore sous confidentialité mais plus sous embargo
                 restrictionTemporelleExiste
-                        && ((LocalDate.parse(this.getConfidentialiteFin(tef, nnt)).isBefore(LocalDate.now()))
-                            && (LocalDate.parse(this.getEmbargoFin(tef, nnt)).isAfter(LocalDate.now()))))
+                        && (
+                        (this.getConfidentialiteFin(tef, nnt).equals("confidentialiteVide") || (LocalDate.parse(this.getConfidentialiteFin(tef, nnt)).isBefore(LocalDate.now())))
+                                &&
+                                (LocalDate.parse(this.getEmbargoFin(tef, nnt)).isAfter(LocalDate.now()))
+                )
+        )
         {
             return TypeAcces.ACCES_ESR;
         }
@@ -131,7 +135,7 @@ public class VerificationDroits {
         return embargoFin;
     }
 
-    private String getConfidentialiteFin (Mets tef, String nnt) throws Exception {
+    private String getConfidentialiteFin (Mets tef, String nnt) {
         log.info("Récupération de confidentialite fin ");
         String confidentialiteFin;
         try {
@@ -140,7 +144,7 @@ public class VerificationDroits {
                 confidentialiteFin = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
                         .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getConfidentialiteFin();
             else
-                throw new Exception("confidentialiteFin est vide");
+                return "confidentialiteVide";
         } catch (NullPointerException e) {
             log.error("Erreur pour récupérer confidentialiteFin de " + nnt + "," + e.getMessage());
             throw e;
