@@ -1,28 +1,13 @@
 package fr.abes.theses.diffusion.service;
 
-import fr.abes.theses.diffusion.database.Service;
-import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Mets;
-import fr.abes.theses.diffusion.utils.TypeAcces;
+import fr.abes.theses.diffusion.utils.Restriction;
+import fr.abes.theses.diffusion.utils.TypeRestriction;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -52,23 +37,21 @@ public class VerificationDroits {
      * renvoie false si la restriction temporelle n'est pas passée
      * @throws Exception
      */
-    public TypeAcces restrictionsTemporelles(Mets tef, String nnt) throws Exception {
+    public Restriction restrictionsTemporelles(Mets tef, String nnt) throws Exception {
 
+        Restriction restriction = new Restriction();
         String restrictionTemporelleType = this.getRestrictionTemporelleType(tef, nnt);
-
-        if (restrictionTemporelleType.equals("sansObjet"))
-            return TypeAcces.ACCES_EN_LIGNE;
-
         boolean restrictionTemporelleExiste = restrictionTemporelleType.equals("embargo")
                 || restrictionTemporelleType.equals("confidentialite")
                 || restrictionTemporelleType.equals("confEmbargo");
-        if (
-                // la restrhiction temporelle est passée
-                restrictionTemporelleExiste
-                        && (LocalDate.parse(this.getRestrictionTemporelleFin(tef, nnt)).isBefore(LocalDate.now())))
-        {
-            return TypeAcces.ACCES_EN_LIGNE;
+
+        // pas de restriction temporelle ou restriction temporelle est passée
+        if (restrictionTemporelleType.equals("sansObjet") || (restrictionTemporelleExiste
+                && (LocalDate.parse(this.getRestrictionTemporelleFin(tef, nnt)).isBefore(LocalDate.now())))) {
+            restriction.setType(TypeRestriction.AUCUNE);
+            return restriction;
         }
+
 
         if (
             // encore sous confidentialité mais plus sous embargo
@@ -80,9 +63,13 @@ public class VerificationDroits {
                 )
         )
         {
-            return TypeAcces.ACCES_ESR;
+            restriction.setType(TypeRestriction.EMBARGO);
+            restriction.setDateFin(this.getEmbargoFin(tef, nnt));
+            return restriction;
         }
-        return TypeAcces.AUCUN_ACCES;
+        restriction.setType(TypeRestriction.CONFIDENTIALITE);
+        restriction.setDateFin(this.getConfidentialiteFin(tef, nnt));
+        return restriction;
     }
 
     private String getRestrictionTemporelleType (Mets tef, String nnt) throws Exception {

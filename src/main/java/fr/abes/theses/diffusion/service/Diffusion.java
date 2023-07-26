@@ -1,8 +1,8 @@
 package fr.abes.theses.diffusion.service;
 
+import fr.abes.theses.diffusion.utils.TypeAcces;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Mets;
-import fr.abes.theses.diffusion.utils.TypeAcces;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,7 +116,7 @@ public class Diffusion {
         }
     }
 
-    public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeAcces, HttpServletResponse response) throws Exception {
+    public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeButton, HttpServletResponse response) throws Exception {
 
         String codeEtab = "";
         String scenario = "";
@@ -132,7 +132,7 @@ public class Diffusion {
             }
 
             String chemin = thesesPathLocal + codeEtab + "/" + idThese + "/document/";
-            String rep = this.versionADiffuser(scenario, typeAcces);
+            String rep = this.versionADiffuser(scenario, typeButton);
             chemin += rep;
 
             log.info("Diffusion => Abes diffuseur : scenario=" + scenario + " chemin=" + chemin);
@@ -172,29 +172,31 @@ public class Diffusion {
      * 0/1/ : la version à diffuser n'est pas celle d'archivage : difference de format par exemple (xml vs pdf)
      * 1/0/ : la version à diffuser n'est pas celle d'archivage : c'est une version expurgée, par exemple en enlevant des images soumises à droits d'auteur
      * @param scenario détermine le scénario de diffusion qui indique : les versions de thèses à diffuser (l'accès (en ligne ou ESR) est modulé par d'éventuelles restrictions de diffusion (confidentialité, embargo).
-     * @param typeAcces le cas 3 permet en parallèle une diffusion sur intranet et une autre sur internet, typeAcces permet de distinguer les deux.
+     * @param typeAcces le cas 3 permet en parallèle une diffusion acces esr et une autre acces en ligne, typeAcces permet de distinguer les deux.
      * @return le chemin d'accès à la thèse
      */
     private String versionADiffuser(String scenario, TypeAcces typeAcces) {
 
         String rep ="";
-        boolean accesEnLigneEtAccesESR = typeAcces.equals(TypeAcces.ACCES_EN_LIGNE) || typeAcces.equals(TypeAcces.ACCES_ESR);
+        boolean accesEnLigneEtAccesESR = typeAcces.equals(TypeAcces.ACCES_LIGNE) || typeAcces.equals(TypeAcces.ACCES_ESR);
 
         if (scenario.equals("cas1") && accesEnLigneEtAccesESR) {
             rep = "0/0/";
         } else if (scenario.equals("cas2") && accesEnLigneEtAccesESR) {
             rep = "0/1/";
-        } else if (scenario.equals("cas3") && typeAcces.equals(TypeAcces.ACCES_EN_LIGNE)) {
+        } else if (scenario.equals("cas3") && typeAcces.equals(TypeAcces.ACCES_LIGNE)) {
             rep = "1/0/";
         } else if (scenario.equals("cas3") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
             rep = "0/0/";
-        } else if (scenario.equals("cas4") && typeAcces.equals(TypeAcces.ACCES_EN_LIGNE)) {
+        } else if (scenario.equals("cas4") && typeAcces.equals(TypeAcces.ACCES_LIGNE)) {
             rep = "1/0/";
         } else if (scenario.equals("cas4") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
+            // todo : attention, pas encore géré dans STAR
             rep = "0/1/";
-        } else if (scenario.equals("cas5") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
+        } else if (scenario.equals("cas5") && !typeAcces.equals(TypeAcces.ACCES_ESR)) {
             rep = "0/0/";
         } else if (scenario.equals("cas6") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
+            // todo : attention, pas encore géré dans STAR
             rep = "0/1/";
         }
 

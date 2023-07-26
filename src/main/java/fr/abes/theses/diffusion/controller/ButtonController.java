@@ -1,12 +1,13 @@
 package fr.abes.theses.diffusion.controller;
 
 import fr.abes.theses.diffusion.buttons.Button;
-import fr.abes.theses.diffusion.buttons.ButtonType;
+import fr.abes.theses.diffusion.utils.Restriction;
+import fr.abes.theses.diffusion.utils.TypeAcces;
 import fr.abes.theses.diffusion.buttons.ResponseButtons;
 import fr.abes.theses.diffusion.database.Service;
 import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.service.VerificationDroits;
-import fr.abes.theses.diffusion.utils.TypeAcces;
+import fr.abes.theses.diffusion.utils.TypeRestriction;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,17 +41,71 @@ public class ButtonController {
 
             These these = service.renvoieThese(nnt);
             String scenario = verificationDroits.getScenario(these.getTef(), nnt);
+            Restriction restriction = verificationDroits.restrictionsTemporelles(these.getTef(), nnt);
 
-            if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                    && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_EN_LIGNE)) {
+            // Acces en ligne
+            boolean cas1cas2cas3cas4 = scenario.equals("cas1") || scenario.equals("cas2") || scenario.equals("cas3") || scenario.equals("cas4");
+            boolean cas5cas6 = scenario.equals("cas5") || scenario.equals("cas6");
 
+            if (cas1cas2cas3cas4
+                    && restriction.getType().equals(TypeRestriction.AUCUNE)) {
+
+                // bouton acces en ligne
                 Button button = new Button();
                 button.setLibelle("Accès en ligne");
                 button.setUrl("/document/".concat(service.verifieNnt(nnt)));
-                button.setButtonType(ButtonType.ACCES_LIGNE);
+                button.setTypeAcces(TypeAcces.ACCES_LIGNE);
                 buttonList.add(button);
 
             }
+
+            // Acces ESR : embargo
+            if (cas1cas2cas3cas4
+                    && restriction.getType().equals(TypeRestriction.EMBARGO)) {
+
+                // bouton acces esr
+                Button button = new Button();
+                button.setLibelle("Accès ESR");
+                button.setUrl("/document/protected/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_ESR);
+                buttonList.add(button);
+
+                // libellé embargo
+                Button button2 = new Button();
+                button2.setLibelle("Embargo");
+                button2.setDateFin(restriction.getDateFin());
+                button2.setTypeAcces(TypeAcces.EMBARGO);
+                buttonList.add(button2);
+
+            }
+
+            // Acces ESR
+            if (cas5cas6
+                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
+
+                // bouton acces esr
+                Button button = new Button();
+                button.setLibelle("Accès ESR");
+                button.setUrl("/document/protected/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_ESR);
+                buttonList.add(button);
+
+            }
+
+            // Confidentialité
+
+            if ((cas1cas2cas3cas4 || cas5cas6)
+                    && restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
+
+                // libelle confidentialite
+                Button button = new Button();
+                button.setLibelle("Confidentialité");
+                button.setDateFin(restriction.getDateFin());
+                button.setTypeAcces(TypeAcces.CONFIDENTIALITE);
+                buttonList.add(button);
+
+            }
+
             return new ResponseEntity<>(responseButtons, HttpStatus.OK);
         }
         catch (Exception e) {
