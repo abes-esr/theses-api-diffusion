@@ -21,6 +21,7 @@ import java.util.Optional;
 
 @Slf4j
 @Component
+
 public class Diffusion {
 
     @Value("${tel.userId}")
@@ -165,6 +166,15 @@ public class Diffusion {
         }
     }
 
+    /**
+     * renvoie le chemin permettant d'accéder à la version à diffuser (cf. https://documentation.abes.fr/aidetheses/index.html#Cas1Cas2:6.1.2.0) :
+     * 0/0/ : la version d'archivage est la version à diffuser
+     * 0/1/ : la version à diffuser n'est pas celle d'archivage : difference de format par exemple (xml vs pdf)
+     * 1/0/ : la version à diffuser n'est pas celle d'archivage : c'est une version expurgée, par exemple en enlevant des images soumises à droits d'auteur
+     * @param scenario détermine le scénario de diffusion qui indique : les versions de thèses à diffuser (l'accès (en ligne ou ESR) est modulé par d'éventuelles restrictions de diffusion (confidentialité, embargo).
+     * @param typeAcces le cas 3 permet en parallèle une diffusion sur intranet et une autre sur internet, typeAcces permet de distinguer les deux.
+     * @return le chemin d'accès à la thèse
+     */
     private String versionADiffuser(String scenario, TypeAcces typeAcces) {
 
         String rep ="";

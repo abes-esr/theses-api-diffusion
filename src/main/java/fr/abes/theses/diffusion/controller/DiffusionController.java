@@ -44,6 +44,15 @@ public class DiffusionController {
         log.info("protection passée pour ".concat(nnt));
         These these = service.renvoieThese(nnt);
 
+        // actuellement les thèses à diffuser en cas 6 ("0/1/", différentes des versions archivées) sont des versions uniquement disponibles dans les établissements
+        // donc on renvoie sur les intranets locaux des établissements en attendant que l'Abes récupère les thèses en question.
+        // (l'authentification pour voir les thèses sur les intranets de ces établissements ne sera possible que pour les personnes ayant un compte dans ces établissements).
+        if ((verificationDroits.getScenario(these.getTef(), nnt).equals("cas6"))
+                && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_ESR)) {
+
+            // todo : à remplacer par une redirection sur l'intranet de l'établissement
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         if (verificationDroits.restrictionsTemporelles(these.getTef(), nnt).equals(TypeAcces.ACCES_ESR)) {
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
         }
