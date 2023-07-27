@@ -45,14 +45,28 @@ public class ButtonController {
 
             // Acces en ligne
             boolean cas1cas2cas3cas4 = scenario.equals("cas1") || scenario.equals("cas2") || scenario.equals("cas3") || scenario.equals("cas4");
+            boolean cas1cas2 = scenario.equals("cas1") || scenario.equals("cas2");
+            boolean cas3cas4 = scenario.equals("cas3") || scenario.equals("cas4");
             boolean cas5cas6 = scenario.equals("cas5") || scenario.equals("cas6");
 
-            if (cas1cas2cas3cas4
+            if (cas1cas2
                     && restriction.getType().equals(TypeRestriction.AUCUNE)) {
 
                 // bouton acces en ligne
                 Button button = new Button();
                 button.setLibelle("Accès en ligne");
+                button.setUrl("document/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_LIGNE);
+                buttonList.add(button);
+
+            }
+
+            if (cas3cas4
+                    && restriction.getType().equals(TypeRestriction.AUCUNE)) {
+
+                // bouton acces en ligne
+                Button button = new Button();
+                button.setLibelle("Accès en ligne à la version incomplète");
                 button.setUrl("document/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_LIGNE);
                 buttonList.add(button);
