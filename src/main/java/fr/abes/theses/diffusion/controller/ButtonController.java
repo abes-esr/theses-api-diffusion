@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +88,8 @@ public class ButtonController {
                 // libellé embargo
                 Button button2 = new Button();
                 button2.setLibelle("Embargo");
-                button2.setDateFin(restriction.getDateFin());
+                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+                button2.setDateFin(sdf.format(restriction.getDateFin()));
                 button2.setTypeAcces(TypeAcces.EMBARGO);
                 buttonList.add(button2);
 
@@ -114,7 +116,8 @@ public class ButtonController {
                 // libelle confidentialite
                 Button button = new Button();
                 button.setLibelle("Confidentialité");
-                button.setDateFin(restriction.getDateFin());
+                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
+                button.setDateFin(sdf.format(restriction.getDateFin()));
                 button.setTypeAcces(TypeAcces.CONFIDENTIALITE);
                 buttonList.add(button);
 
