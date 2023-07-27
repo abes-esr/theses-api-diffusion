@@ -53,7 +53,9 @@ public class DiffusionController {
 
             // todo : à remplacer par une redirection sur l'intranet de l'établissement
             log.error("version de diffusion 0/1/ cas 6 non disponible");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            // diffusion via l'intranet de l'établissement
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
+                return ResponseEntity.status(HttpStatus.OK).build();
         }
         // problème similaire que ci-dessus pour le cas 4 sous embargo
         if ((verificationDroits.getScenario(these.getTef(), nnt).equals("cas4"))
@@ -61,7 +63,7 @@ public class DiffusionController {
 
             // todo : à remplacer par une redirection sur l'intranet de l'établissement
             log.error("version de diffusion 0/1/ cas 4 sous embargo non disponible");
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         if (!verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {

@@ -53,7 +53,7 @@ public class ButtonController {
                 // bouton acces en ligne
                 Button button = new Button();
                 button.setLibelle("Accès en ligne");
-                button.setUrl("/document/".concat(service.verifieNnt(nnt)));
+                button.setUrl("document/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_LIGNE);
                 buttonList.add(button);
 
@@ -66,7 +66,7 @@ public class ButtonController {
                 // bouton acces esr
                 Button button = new Button();
                 button.setLibelle("Accès ESR");
-                button.setUrl("/document/protected/".concat(service.verifieNnt(nnt)));
+                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_ESR);
                 buttonList.add(button);
 
@@ -86,7 +86,7 @@ public class ButtonController {
                 // bouton acces esr
                 Button button = new Button();
                 button.setLibelle("Accès ESR");
-                button.setUrl("/document/protected/".concat(service.verifieNnt(nnt)));
+                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_ESR);
                 buttonList.add(button);
 
