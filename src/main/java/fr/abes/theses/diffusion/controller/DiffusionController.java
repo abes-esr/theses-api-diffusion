@@ -58,6 +58,7 @@ public class DiffusionController {
                 return ResponseEntity.status(HttpStatus.OK).build();
             else {
                 // si l'url intranet n'a pas été renseignée dans le tef...
+                log.info("url intranet n'a pas été renseignée dans le tef");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
         }
