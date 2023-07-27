@@ -52,8 +52,8 @@ public class DiffusionController {
                 && !verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
             // todo : à remplacer par une redirection sur l'intranet de l'établissement
-            log.error("version de diffusion 0/1/ cas 6 non disponible");
-            // diffusion via l'intranet de l'établissement
+            log.info("version de diffusion 0/1/ cas 6 non disponible");
+            log.info("diffusion via l'intranet de l'établissement");
             if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
                 return ResponseEntity.status(HttpStatus.OK).build();
         }
