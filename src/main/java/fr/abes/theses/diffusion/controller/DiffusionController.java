@@ -56,6 +56,10 @@ public class DiffusionController {
             log.info("diffusion via l'intranet de l'établissement");
             if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
                 return ResponseEntity.status(HttpStatus.OK).build();
+            else {
+                // si l'url intranet n'a pas été renseignée dans le tef...
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
         }
         // problème similaire que ci-dessus pour le cas 4 sous embargo
         if ((verificationDroits.getScenario(these.getTef(), nnt).equals("cas4"))
