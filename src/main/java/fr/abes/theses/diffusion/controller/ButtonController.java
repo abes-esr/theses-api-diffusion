@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -88,8 +89,10 @@ public class ButtonController {
                 // libellé embargo
                 Button button2 = new Button();
                 button2.setLibelle("Embargo");
-                SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-                button2.setDateFin(sdf.format(restriction.getDateFin()));
+                SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = inputFormatter.parse(restriction.getDateFin());
+                SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                button2.setDateFin(outputFormatter.format(date));
                 button2.setTypeAcces(TypeAcces.EMBARGO);
                 buttonList.add(button2);
 
@@ -117,7 +120,10 @@ public class ButtonController {
                 Button button = new Button();
                 button.setLibelle("Confidentialité");
                 SimpleDateFormat sdf=new SimpleDateFormat("dd-MM-yyyy");
-                button.setDateFin(sdf.format(restriction.getDateFin()));
+                SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = inputFormatter.parse(restriction.getDateFin());
+                SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MM-yyyy");
+                button.setDateFin(outputFormatter.format(date));
                 button.setTypeAcces(TypeAcces.CONFIDENTIALITE);
                 buttonList.add(button);
 
