@@ -193,7 +193,7 @@ public class Diffusion {
         } else if (scenario.equals("cas4") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
             // todo : attention, pas encore géré dans STAR
             rep = "0/1/";
-        } else if (scenario.equals("cas5") && !typeAcces.equals(TypeAcces.ACCES_ESR)) {
+        } else if (scenario.equals("cas5") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
             rep = "0/0/";
         } else if (scenario.equals("cas6") && typeAcces.equals(TypeAcces.ACCES_ESR)) {
             // todo : attention, pas encore géré dans STAR
