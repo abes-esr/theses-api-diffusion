@@ -45,38 +45,12 @@ public class DiffusionController {
         log.info("protection passée pour ".concat(nnt));
         These these = service.renvoieThese(nnt);
 
-        // actuellement les thèses à diffuser en cas 6 ("0/1/", différentes des versions archivées) sont des versions uniquement disponibles dans les établissements
-        // donc on renvoie sur les intranets locaux des établissements en attendant que l'Abes récupère les thèses en question.
-        // (l'authentification pour voir les thèses sur les intranets de ces établissements ne sera possible que pour les personnes ayant un compte dans ces établissements).
-        if ((verificationDroits.getScenario(these.getTef(), nnt).equals("cas6"))
-                && !verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
-            log.info("version de diffusion 0/1/ cas 6 non disponible");
-            log.info("cas 6 : diffusion via l'intranet de l'établissement");
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
-                return ResponseEntity.status(HttpStatus.OK).build();
-            else {
-                // si l'url intranet n'a pas été renseignée dans le tef...
-                log.info("url intranet n'a pas été renseignée dans le tef");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-        }
-        // problème similaire que ci-dessus pour le cas 4 sous embargo
-        if ((verificationDroits.getScenario(these.getTef(), nnt).equals("cas4"))
-                && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.EMBARGO)) {
-
-            log.error("version de diffusion 0/1/ cas 4 sous embargo non disponible");
-            log.info("cas 4 : diffusion via l'intranet de l'établissement");
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
-                return ResponseEntity.status(HttpStatus.OK).build();
-            else {
-                // si l'url intranet n'a pas été renseignée dans le tef...
-                log.info("url intranet n'a pas été renseignée dans le tef");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-            }
-        }
-
-        if (!verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
+        // on renvoie le fichier uniquement si le scénario n'est pas cas6, pas cas4 sous embargo ou s'il y n'y a pas de confidentialité
+        if (
+                (!verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) &&
+                        (!(verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.EMBARGO))) &&
+                !verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

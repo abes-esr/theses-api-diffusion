@@ -46,7 +46,7 @@ public class ButtonController {
             Restriction restriction = verificationDroits.restrictionsTemporelles(these.getTef(), nnt);
 
             // Acces en ligne
-            boolean cas1cas2cas3cas4 = scenario.equals("cas1") || scenario.equals("cas2") || scenario.equals("cas3") || scenario.equals("cas4");
+            boolean cas1cas2cas3 = scenario.equals("cas1") || scenario.equals("cas2") || scenario.equals("cas3");
             boolean cas1cas2 = scenario.equals("cas1") || scenario.equals("cas2");
             boolean cas3cas4 = scenario.equals("cas3") || scenario.equals("cas4");
             boolean cas5cas6 = scenario.equals("cas5") || scenario.equals("cas6");
@@ -76,7 +76,7 @@ public class ButtonController {
             }
 
             // Acces ESR : embargo
-            if (cas1cas2cas3cas4
+            if (cas1cas2cas3
                     && restriction.getType().equals(TypeRestriction.EMBARGO)) {
 
                 // bouton acces esr
@@ -99,7 +99,7 @@ public class ButtonController {
             }
 
             // Acces ESR
-            if (cas5cas6
+            if (scenario.equals("cas5")
                     && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
                 // bouton acces esr
@@ -113,7 +113,7 @@ public class ButtonController {
 
             // Confidentialité
 
-            if ((cas1cas2cas3cas4 || cas5cas6)
+            if ((cas1cas2cas3 || scenario.equals("cas4") || cas5cas6)
                     && restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
                 // libelle confidentialite
