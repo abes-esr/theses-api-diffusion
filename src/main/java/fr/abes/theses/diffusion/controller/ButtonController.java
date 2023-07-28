@@ -116,8 +116,10 @@ public class ButtonController {
             }
 
             // Acces intranet établissement
-            if (scenario.equals("cas6")
-                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
+            if ((scenario.equals("cas6")
+                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE) ||
+                    scenario.equals("cas4")
+                            && restriction.getType().equals(TypeRestriction.EMBARGO))
             && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
 
                 // bouton acces intranet établissement

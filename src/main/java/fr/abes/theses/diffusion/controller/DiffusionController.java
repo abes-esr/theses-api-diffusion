@@ -45,7 +45,9 @@ public class DiffusionController {
         log.info("protection passée pour ".concat(nnt));
         These these = service.renvoieThese(nnt);
 
-        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) {
+        // cas 6 et cas 4 sous embargo, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond
+        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6") ||
+                verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
             if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
                 return ResponseEntity.status(HttpStatus.OK).build();
             else
