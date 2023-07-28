@@ -45,6 +45,12 @@ public class DiffusionController {
         log.info("protection passée pour ".concat(nnt));
         These these = service.renvoieThese(nnt);
 
+        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) {
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
+                return ResponseEntity.status(HttpStatus.OK).build();
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
         // on renvoie le fichier uniquement si le scénario n'est pas cas6, pas cas4 sous embargo ou s'il y n'y a pas de confidentialité
         if (
@@ -75,7 +81,7 @@ public class DiffusionController {
                 && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
 
             // diffusion par l'établissement
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response))
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
                 return ResponseEntity.status(HttpStatus.OK).build();
             // diffusion par le CCSD
             if (diffusion.diffusionCcsd(these.getTef(), nnt, response))

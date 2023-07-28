@@ -1,6 +1,7 @@
 package fr.abes.theses.diffusion.controller;
 
 import fr.abes.theses.diffusion.buttons.Button;
+import fr.abes.theses.diffusion.service.Diffusion;
 import fr.abes.theses.diffusion.utils.Restriction;
 import fr.abes.theses.diffusion.utils.TypeAcces;
 import fr.abes.theses.diffusion.buttons.ResponseButtons;
@@ -32,6 +33,8 @@ public class ButtonController {
 
     @Autowired
     Service service;
+    @Autowired
+    Diffusion diffusion;
 
     @GetMapping(value = "button/{nnt}")
     public ResponseEntity<ResponseButtons> buttons(@PathVariable String nnt) throws Exception {
@@ -76,6 +79,7 @@ public class ButtonController {
             }
 
             // Acces ESR : embargo
+            // pas de cas 4 : on a pas les fichiers
             if (cas1cas2cas3
                     && restriction.getType().equals(TypeRestriction.EMBARGO)) {
 
@@ -105,6 +109,20 @@ public class ButtonController {
                 // bouton acces esr
                 Button button = new Button();
                 button.setLibelle("Accès ESR");
+                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_ESR);
+                buttonList.add(button);
+
+            }
+
+            // Acces intranet établissement
+            if (scenario.equals("cas6")
+                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
+            && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
+
+                // bouton acces intranet établissement
+                Button button = new Button();
+                button.setLibelle("Accès Intranet Etablissement");
                 button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_ESR);
                 buttonList.add(button);

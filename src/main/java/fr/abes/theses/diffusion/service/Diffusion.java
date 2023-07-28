@@ -38,7 +38,7 @@ public class Diffusion {
     @Autowired
     ServiceFichiers serviceFichiers;
 
-    public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt, HttpServletResponse response) {
+    public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt, HttpServletResponse response, boolean dryRun) {
 
         Boolean urlRepond;
         Boolean documentServi = false;
@@ -62,8 +62,10 @@ public class Diffusion {
                         urlRepond = this.urlExists(urlEtab);
 
                         if (urlRepond) {
-                            log.info("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
-                            response.sendRedirect(urlEtab);
+                            if (!dryRun) {
+                                log.info("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
+                                response.sendRedirect(urlEtab);
+                            }
                             documentServi = true;
                         }
                     }
