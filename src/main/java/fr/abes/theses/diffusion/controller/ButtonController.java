@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,14 +92,7 @@ public class ButtonController {
                 buttonList.add(button);
 
                 // libellé embargo
-                Button button2 = new Button();
-                button2.setLibelle("Embargo");
-                SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = inputFormatter.parse(restriction.getDateFin());
-                SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MM-yyyy");
-                button2.setDateFin(outputFormatter.format(date));
-                button2.setTypeAcces(TypeAcces.EMBARGO);
-                buttonList.add(button2);
+                getButtonLibelle(buttonList, restriction);
 
             }
 
@@ -115,11 +109,26 @@ public class ButtonController {
 
             }
 
-            // Acces intranet établissement
-            if ((scenario.equals("cas6")
-                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE) ||
-                    scenario.equals("cas4")
-                            && restriction.getType().equals(TypeRestriction.EMBARGO))
+            // Acces intranet établissement cas 4 sous embargo
+            if (scenario.equals("cas4")
+                    && restriction.getType().equals(TypeRestriction.EMBARGO)
+                    && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
+
+                // bouton acces intranet établissement
+                Button button = new Button();
+                button.setLibelle("Accès Intranet Etablissement");
+                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_ESR);
+                buttonList.add(button);
+
+                // libellé embargo
+                getButtonLibelle(buttonList, restriction);
+
+            }
+
+            // Acces intranet établissement cas 6
+            if (scenario.equals("cas6")
+                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
             && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
 
                 // bouton acces intranet établissement
@@ -155,5 +164,16 @@ public class ButtonController {
             log.error(e.toString());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private void getButtonLibelle(List<Button> buttonList, Restriction restriction) throws ParseException {
+        Button libelleEmbargo = new Button();
+        libelleEmbargo.setLibelle("Embargo");
+        SimpleDateFormat inputFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = inputFormatter.parse(restriction.getDateFin());
+        SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        libelleEmbargo.setDateFin(outputFormatter.format(date));
+        libelleEmbargo.setTypeAcces(TypeAcces.EMBARGO);
+        buttonList.add(libelleEmbargo);
     }
 }
