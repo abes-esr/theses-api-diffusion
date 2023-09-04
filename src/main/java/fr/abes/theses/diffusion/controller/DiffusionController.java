@@ -101,10 +101,17 @@ public class DiffusionController {
         These these = service.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
 
-        // cas 6 et cas 4 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond
-        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6") ||
-                verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
+        // cas 4 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond (url dans les identifier)
+        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
             if (diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, response, false))
+                return ResponseEntity.status(HttpStatus.OK).build();
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // cas 6 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond (url dans le bloc de gestion du tef)
+        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) {
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
                 return ResponseEntity.status(HttpStatus.OK).build();
             else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -139,7 +139,7 @@ public class ButtonController {
 
             if (scenario.equals("cas6")
                     && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
-                    && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
+                    && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
 
                 Button button = new Button();
                 button.setLibelle("Accès Intranet Etablissement");
