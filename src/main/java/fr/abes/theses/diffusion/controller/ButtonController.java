@@ -94,7 +94,7 @@ public class ButtonController {
             if (scenario.equals("cas3")) {
 
                 Button button = new Button();
-                button.setLibelle("Accès Intranet Etablissement");
+                button.setLibelle("Accès ESR");
                 button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_ESR);
                 buttonList.add(button);
