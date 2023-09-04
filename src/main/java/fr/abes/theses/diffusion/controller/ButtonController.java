@@ -91,7 +91,7 @@ public class ButtonController {
 
             }
 
-            if (scenario.equals("cas3")) {
+            if (scenario.equals("cas3") && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
                 Button button = new Button();
                 button.setLibelle("Accès ESR");
@@ -105,7 +105,9 @@ public class ButtonController {
 
             }
 
-            if (scenario.equals("cas4") && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
+            if (scenario.equals("cas4")
+                    && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
+                    && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
 
                 // bouton acces intranet établissement
                 Button button = new Button();
