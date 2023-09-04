@@ -1,5 +1,6 @@
 package fr.abes.theses.diffusion.service;
 
+import fr.abes.theses.diffusion.model.tef.Identifier;
 import fr.abes.theses.diffusion.utils.TypeAcces;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Mets;
@@ -16,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +40,14 @@ public class Diffusion {
     @Autowired
     ServiceFichiers serviceFichiers;
 
+    /**
+     * permet la diffusion de la thèse lorqu'elle est publiée par l'établissement
+     * @param tef permet de vérifier que l'établissement veut et peut diffuser la thèse
+     * @param nnt identifiant de la thèse
+     * @param response permet de rediriger sur l'établissement
+     * @param dryRun permet de vérifier que la diffusion est possible sans lancer la diffusion
+     * @return booléen indiquant si la diffusion par l'établissement est possible
+     */
     public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt, HttpServletResponse response, boolean dryRun) {
 
         Boolean urlRepond;
@@ -54,21 +64,8 @@ public class Diffusion {
 
                     String urlEtab = starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
                             .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().get(0).getValue().trim();
-                    // Vérification que létablissement n'a pas saisi une url theses.fr (risque de boucle infinie)
-                    if (!urlEtab.contains("theses.fr")) {
-                        urlEtab = formateUrl(urlEtab);
 
-                        // Vérification que le fichier est bien disponible à l'url donnée
-                        urlRepond = this.urlExists(urlEtab);
-
-                        if (urlRepond) {
-                            if (!dryRun) {
-                                log.info("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
-                                response.sendRedirect(urlEtab);
-                            }
-                            documentServi = true;
-                        }
-                    }
+                    documentServi = redirigeSurUrlEtablissement(response, dryRun, documentServi, urlEtab);
                 }
             }
             return documentServi;
@@ -79,6 +76,67 @@ public class Diffusion {
             log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
             throw new RuntimeException(e);
         }
+    }
+
+    public Boolean diffusionEtablissementIntranet(Mets tef, String nnt, HttpServletResponse response, boolean dryRun) {
+
+        Boolean urlRepond;
+        Boolean documentServi = false;
+        try {
+            Iterator<DmdSec> iterator = tef.getDmdSec().iterator();
+            while (iterator.hasNext()) {
+                DmdSec dmdSec = iterator.next();
+                Iterator<Identifier> iteratorIdentifier;
+                try {
+                    iteratorIdentifier = dmdSec.getMdWrap().getXmlData().getEdition().getIdentifier().iterator();
+                } catch (NullPointerException e) {
+                    log.info("pas dans ce bloc...");
+                    continue;
+                }
+
+                String urlEtab = "";
+                while (iteratorIdentifier.hasNext()) {
+                    Identifier identifier = iteratorIdentifier.next();
+                    if (this.estUrlIntranetEtab(identifier.getValue().trim())) {
+                        urlEtab = identifier.getValue().trim();
+                    }
+                }
+                documentServi = redirigeSurUrlEtablissement(response, dryRun, documentServi, urlEtab);
+
+            }
+
+            return documentServi;
+        } catch (IOException e) {
+            log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Boolean redirigeSurUrlEtablissement(HttpServletResponse response, boolean dryRun, Boolean documentServi, String urlEtab) throws IOException {
+        Boolean urlRepond;
+        // Vérification que l'établissement n'a pas saisi une url theses.fr (risque de boucle infinie)
+        if (!urlEtab.contains("theses.fr")) {
+            urlEtab = formateUrl(urlEtab);
+
+            // Vérification que le fichier est bien disponible à l'url donnée
+            urlRepond = this.urlExists(urlEtab);
+
+            if (urlRepond) {
+                if (!dryRun) {
+                    log.info("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
+                    response.sendRedirect(urlEtab);
+                }
+                documentServi = true;
+            }
+        }
+        return documentServi;
+    }
+
+    private Boolean estUrlIntranetEtab (String url) {
+        if (!url.contains("sudoc")) {
+            return true;
+        }
+        return false;
     }
 
     public Boolean diffusionCcsd (Mets tef, String nnt, HttpServletResponse response) {
@@ -118,7 +176,7 @@ public class Diffusion {
         }
     }
 
-    public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeButton, HttpServletResponse response) throws Exception {
+    public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeAcces, HttpServletResponse response) throws Exception {
 
         String codeEtab = "";
         String scenario = "";
@@ -134,7 +192,7 @@ public class Diffusion {
             }
 
             String chemin = thesesPathLocal + codeEtab + "/" + idThese + "/document/";
-            String rep = this.versionADiffuser(scenario, typeButton);
+            String rep = this.versionADiffuser(scenario, typeAcces);
             chemin += rep;
 
             log.info("Diffusion => Abes diffuseur : scenario=" + scenario + " chemin=" + chemin);

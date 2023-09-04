@@ -49,7 +49,6 @@ public class ButtonController {
             String scenario = verificationDroits.getScenario(these.getTef(), nnt);
             Restriction restriction = verificationDroits.restrictionsTemporelles(these.getTef(), nnt);
 
-            // Acces en ligne
             boolean cas1cas2cas3 = scenario.equals("cas1") || scenario.equals("cas2") || scenario.equals("cas3");
             boolean cas1cas2 = scenario.equals("cas1") || scenario.equals("cas2");
             boolean cas3cas4 = scenario.equals("cas3") || scenario.equals("cas4");
@@ -58,12 +57,25 @@ public class ButtonController {
             if (cas1cas2
                     && restriction.getType().equals(TypeRestriction.AUCUNE)) {
 
-                // bouton acces en ligne
                 Button button = new Button();
                 button.setLibelle("Accès en ligne");
                 button.setUrl("document/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_LIGNE);
                 buttonList.add(button);
+
+            }
+
+            if (cas1cas2
+                    && restriction.getType().equals(TypeRestriction.EMBARGO)) {
+
+                // bouton acces esr
+                Button button = new Button();
+                button.setLibelle("Accès ESR");
+                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_ESR);
+                buttonList.add(button);
+
+                getButtonLibelle(buttonList, restriction);
 
             }
 
@@ -79,24 +91,37 @@ public class ButtonController {
 
             }
 
-            // Acces ESR : embargo
-            // pas de cas 4 : on a pas les fichiers
-            if (cas1cas2cas3
-                    && restriction.getType().equals(TypeRestriction.EMBARGO)) {
+            if (scenario.equals("cas3")) {
 
-                // bouton acces esr
                 Button button = new Button();
-                button.setLibelle("Accès ESR");
+                button.setLibelle("Accès Intranet Etablissement");
                 button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_ESR);
                 buttonList.add(button);
 
-                // libellé embargo
+                if (restriction.getType().equals(TypeRestriction.EMBARGO)) {
+                    getButtonLibelle(buttonList, restriction);
+                }
+
+            }
+
+            if (scenario.equals("cas4") && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
+
+                // bouton acces intranet établissement
+                Button button = new Button();
+                button.setLibelle("Accès Intranet Etablissement");
+                button.setUrl("document/intranetEtab/".concat(service.verifieNnt(nnt)));
+                button.setTypeAcces(TypeAcces.ACCES_ESR);
+                buttonList.add(button);
+
+            }
+
+            if (scenario.equals("cas4") && restriction.getType().equals(TypeRestriction.EMBARGO)) {
+
                 getButtonLibelle(buttonList, restriction);
 
             }
 
-            // Acces ESR
             if (scenario.equals("cas5")
                     && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
@@ -109,38 +134,19 @@ public class ButtonController {
 
             }
 
-            // Acces intranet établissement cas 4 sous embargo
-            if (scenario.equals("cas4")
-                    && restriction.getType().equals(TypeRestriction.EMBARGO)
-                    && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
 
-                // bouton acces intranet établissement
-                Button button = new Button();
-                button.setLibelle("Accès Intranet Etablissement");
-                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
-                button.setTypeAcces(TypeAcces.ACCES_ESR);
-                buttonList.add(button);
-
-                // libellé embargo
-                getButtonLibelle(buttonList, restriction);
-
-            }
-
-            // Acces intranet établissement cas 6
             if (scenario.equals("cas6")
                     && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
-            && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
+                    && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
 
-                // bouton acces intranet établissement
                 Button button = new Button();
                 button.setLibelle("Accès Intranet Etablissement");
-                button.setUrl("document/protected/".concat(service.verifieNnt(nnt)));
+                button.setUrl("document/intranetEtab/".concat(service.verifieNnt(nnt)));
                 button.setTypeAcces(TypeAcces.ACCES_ESR);
                 buttonList.add(button);
 
             }
 
-            // Confidentialité
 
             if ((cas1cas2cas3 || scenario.equals("cas4") || cas5cas6)
                     && restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {

@@ -32,7 +32,7 @@ public class DiffusionController {
     Service service;
 
     /**
-     * Renvoie les thèses disponibles en accès restreint Abes
+     * Renvoie les thèses disponibles en accès restreint avec diffusion Abes
      * @param nnt
      * @return
      * @throws Exception
@@ -45,19 +45,10 @@ public class DiffusionController {
         log.info("protection passée pour ".concat(nnt));
         These these = service.renvoieThese(nnt);
 
-        // cas 6 et cas 4 sous embargo, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond
-        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6") ||
-                verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
-                return ResponseEntity.status(HttpStatus.OK).build();
-            else
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        // on renvoie le fichier uniquement si le scénario n'est pas cas6, pas cas4 sous embargo ou s'il y n'y a pas de confidentialité
+        // on renvoie le fichier uniquement si le scénario n'est pas cas6, pas cas4 ou s'il y n'y a pas de confidentialité
         if (
                 (!verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) &&
-                        (!(verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") && verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.EMBARGO))) &&
+                        !verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") &&
                 !verificationDroits.restrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
         }
@@ -91,6 +82,32 @@ public class DiffusionController {
             // diffusion par l'Abes
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
 
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    /**
+     * Renvoie les thèses disponibles en accès restreint avec diffusion intranet établissement
+     * @param nnt
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = "document/intranetEtab/{nnt}")
+    public ResponseEntity<byte[]> documentIntranetEtab(
+            @PathVariable
+            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt, HttpServletResponse response) throws Exception {
+
+        These these = service.renvoieThese(nnt);
+        String scenario = verificationDroits.getScenario(these.getTef(), nnt);
+
+        // cas 6 et cas 4 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond
+        if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6") ||
+                verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
+            if (diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, response, false))
+                return ResponseEntity.status(HttpStatus.OK).build();
+            else
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
