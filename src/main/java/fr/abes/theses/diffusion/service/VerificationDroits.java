@@ -37,7 +37,7 @@ public class VerificationDroits {
      * renvoie false si la restriction temporelle n'est pas passée
      * @throws Exception
      */
-    public Restriction restrictionsTemporelles(Mets tef, String nnt) throws Exception {
+    public Restriction getRestrictionsTemporelles(Mets tef, String nnt) throws Exception {
 
         Restriction restriction = new Restriction();
         String restrictionTemporelleType = this.getRestrictionTemporelleType(tef, nnt);

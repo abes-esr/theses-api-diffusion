@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Button {
+public class Bouton {
     String libelle;
     String url;
     String dateFin; // fin d'embargo ou fin de confidentialité, vide sinon

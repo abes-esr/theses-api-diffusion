@@ -1,6 +1,8 @@
 package fr.abes.theses.diffusion.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,16 +18,19 @@ public class Service {
     }
 
     public These renvoieThese(String nnt) throws Exception {
-        nnt = this.verifieNnt(nnt);
+        if (!verifieNnt(nnt)) {
+            throw new Exception("nnt incorrect");
+        }
         These these = this.findTheseByNnt(nnt);
         these.initTef();
         return these;
     }
-    public String verifieNnt(String nnt) throws Exception {
+    public Boolean verifieNnt(String nnt) throws Exception {
+        // TODO: 27/09/2023 renforcer la vérification du nnt
         nnt = nnt.toUpperCase();
         if (nnt.length()!=12)
-            throw new Exception("erreur sur la longueur du nnt");
-        return nnt;
+            return false;
+        return true;
     }
 
 }
