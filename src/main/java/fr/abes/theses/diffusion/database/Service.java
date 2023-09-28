@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Component
 public class Service {
 
@@ -26,11 +29,11 @@ public class Service {
         return these;
     }
     public Boolean verifieNnt(String nnt) throws Exception {
-        // TODO: 27/09/2023 renforcer la vérification du nnt
-        nnt = nnt.toUpperCase();
-        if (nnt.length()!=12)
-            return false;
-        return true;
+
+        String regex = "[1-2][0-9][0-9][0-9][A-Z][A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]";
+        Pattern p = Pattern.compile(regex);
+        Matcher m = p.matcher(nnt);
+        return m.matches();
     }
 
 }
