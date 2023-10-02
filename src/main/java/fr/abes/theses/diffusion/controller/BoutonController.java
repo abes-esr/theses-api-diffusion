@@ -1,14 +1,11 @@
 package fr.abes.theses.diffusion.controller;
 
-import fr.abes.theses.diffusion.buttons.Bouton;
-import fr.abes.theses.diffusion.buttons.Categorie;
-import fr.abes.theses.diffusion.buttons.SousCategorie;
+import fr.abes.theses.diffusion.buttons.*;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Identifier;
 import fr.abes.theses.diffusion.service.Diffusion;
 import fr.abes.theses.diffusion.utils.Restriction;
 import fr.abes.theses.diffusion.utils.TypeAcces;
-import fr.abes.theses.diffusion.buttons.ResponseBoutons;
 import fr.abes.theses.diffusion.database.Service;
 import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.service.VerificationDroits;
@@ -38,6 +35,8 @@ public class BoutonController {
     VerificationDroits verificationDroits;
 
     @Autowired
+    ChasseLivres chasseLivres;
+    @Autowired
     Service service;
     @Autowired
     Diffusion diffusion;
@@ -56,7 +55,7 @@ public class BoutonController {
             These these = service.renvoieThese(nnt);
 
             ajouteBoutonsStar(responseBoutons, these, nnt);
-            ajouteBoutonsSudoc(responseBoutons, these);
+            ajouteBoutonsSudoc(responseBoutons, these, nnt);
 
             return new ResponseEntity<>(responseBoutons, HttpStatus.OK);
         }
@@ -195,7 +194,7 @@ public class BoutonController {
 
         }
     }
-    private void ajouteBoutonsSudoc (ResponseBoutons responseBoutons, These these) {
+    private void ajouteBoutonsSudoc (ResponseBoutons responseBoutons, These these, String nnt) {
         Iterator<DmdSec> iterator = these.getTef().getDmdSec().iterator();
         while (iterator.hasNext()) {
 
@@ -244,6 +243,22 @@ public class BoutonController {
                 bouton.setTypeAcces(TypeAcces.SUDOC);
                 // autres versions
                 responseBoutons.getCategories().get(1).getBoutons().add(bouton);
+
+                if (dmdSec.getMdWrap().getXmlData().getEdition().getISBN() != null
+                && !dmdSec.getMdWrap().getXmlData().getEdition().getISBN().isEmpty()) {
+
+                    try {
+                        BoutonChasseLivres boutonChasseLivres = new BoutonChasseLivres();
+                        chasseLivres.configureBouton(boutonChasseLivres, dmdSec.getMdWrap().getXmlData().getEdition().getISBN(), nnt);
+                        boutonChasseLivres.setLibelle("Achat en ligne");
+                        boutonChasseLivres.setTypeAcces(TypeAcces.SUDOC);
+                        // autres versions
+                        responseBoutons.getCategories().get(1).getBoutons().add(boutonChasseLivres);
+                    }
+                    catch (Exception e) {
+                        log.error("erreur lors de la configuration du bouton chasse aux livres pour " + nnt);
+                    }
+                }
             }
 
             if (dmdSec.getID().contains("EDITION_COM_ELEC")) {
