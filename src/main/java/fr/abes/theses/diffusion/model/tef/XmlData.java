@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2023.04.27 à 04:33:45 PM CEST 
+// Généré le : 2023.09.29 à 06:05:38 PM CEST 
 //
 
 
@@ -271,7 +271,9 @@ import javax.xml.datatype.XMLGregorianCalendar;
  *                                                     &lt;/complexType>
  *                                                   &lt;/element>
  *                                                 &lt;/sequence>
+ *                                                 &lt;attribute name="confidentialiteFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *                                                 &lt;attribute name="conformitePolDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+ *                                                 &lt;attribute name="embargoFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *                                                 &lt;attribute name="restrictionTemporelleFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
  *                                                 &lt;attribute name="restrictionTemporelleType" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
  *                                                 &lt;attribute name="typeDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
@@ -701,7 +703,9 @@ public class XmlData {
      *                                         &lt;/complexType>
      *                                       &lt;/element>
      *                                     &lt;/sequence>
+     *                                     &lt;attribute name="confidentialiteFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
      *                                     &lt;attribute name="conformitePolDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+     *                                     &lt;attribute name="embargoFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
      *                                     &lt;attribute name="restrictionTemporelleFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
      *                                     &lt;attribute name="restrictionTemporelleType" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
      *                                     &lt;attribute name="typeDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
@@ -1200,7 +1204,9 @@ public class XmlData {
          *                               &lt;/complexType>
          *                             &lt;/element>
          *                           &lt;/sequence>
+         *                           &lt;attribute name="confidentialiteFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
          *                           &lt;attribute name="conformitePolDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+         *                           &lt;attribute name="embargoFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
          *                           &lt;attribute name="restrictionTemporelleFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
          *                           &lt;attribute name="restrictionTemporelleType" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
          *                           &lt;attribute name="typeDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
@@ -2661,7 +2667,9 @@ public class XmlData {
              *                     &lt;/complexType>
              *                   &lt;/element>
              *                 &lt;/sequence>
+             *                 &lt;attribute name="confidentialiteFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
              *                 &lt;attribute name="conformitePolDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+             *                 &lt;attribute name="embargoFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
              *                 &lt;attribute name="restrictionTemporelleFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
              *                 &lt;attribute name="restrictionTemporelleType" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
              *                 &lt;attribute name="typeDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
@@ -2987,7 +2995,9 @@ public class XmlData {
                  *           &lt;/complexType>
                  *         &lt;/element>
                  *       &lt;/sequence>
+                 *       &lt;attribute name="confidentialiteFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
                  *       &lt;attribute name="conformitePolDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
+                 *       &lt;attribute name="embargoFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
                  *       &lt;attribute name="restrictionTemporelleFin" use="required" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
                  *       &lt;attribute name="restrictionTemporelleType" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
                  *       &lt;attribute name="typeDiffusion" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
@@ -3019,10 +3029,16 @@ public class XmlData {
                     protected XmlData.StarGestion.Traitements.Sorties.Diffusion.AutresEtabDiffuseurs autresEtabDiffuseurs;
                     @XmlElement(namespace = "", required = true)
                     protected XmlData.StarGestion.Traitements.Sorties.Diffusion.Oai oai;
+                    @XmlAttribute(name = "confidentialiteFin", required = true)
+                    @XmlSchemaType(name = "anySimpleType")
+                    protected String confidentialiteFin;
                     @XmlAttribute(name = "conformitePolDiffusion", required = true)
                     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
                     @XmlSchemaType(name = "NCName")
                     protected String conformitePolDiffusion;
+                    @XmlAttribute(name = "embargoFin", required = true)
+                    @XmlSchemaType(name = "anySimpleType")
+                    protected String embargoFin;
                     @XmlAttribute(name = "restrictionTemporelleFin", required = true)
                     @XmlSchemaType(name = "anySimpleType")
                     protected String restrictionTemporelleFin;
@@ -3159,6 +3175,30 @@ public class XmlData {
                     }
 
                     /**
+                     * Obtient la valeur de la propriété confidentialiteFin.
+                     * 
+                     * @return
+                     *     possible object is
+                     *     {@link String }
+                     *     
+                     */
+                    public String getConfidentialiteFin() {
+                        return confidentialiteFin;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété confidentialiteFin.
+                     * 
+                     * @param value
+                     *     allowed object is
+                     *     {@link String }
+                     *     
+                     */
+                    public void setConfidentialiteFin(String value) {
+                        this.confidentialiteFin = value;
+                    }
+
+                    /**
                      * Obtient la valeur de la propriété conformitePolDiffusion.
                      * 
                      * @return
@@ -3180,6 +3220,30 @@ public class XmlData {
                      */
                     public void setConformitePolDiffusion(String value) {
                         this.conformitePolDiffusion = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété embargoFin.
+                     * 
+                     * @return
+                     *     possible object is
+                     *     {@link String }
+                     *     
+                     */
+                    public String getEmbargoFin() {
+                        return embargoFin;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété embargoFin.
+                     * 
+                     * @param value
+                     *     allowed object is
+                     *     {@link String }
+                     *     
+                     */
+                    public void setEmbargoFin(String value) {
+                        this.embargoFin = value;
                     }
 
                     /**

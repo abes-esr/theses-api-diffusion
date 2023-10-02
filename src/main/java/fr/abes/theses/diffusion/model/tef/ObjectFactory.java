@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2023.04.27 à 04:33:45 PM CEST 
+// Généré le : 2023.09.29 à 06:05:38 PM CEST 
 //
 
 
@@ -48,6 +48,7 @@ public class ObjectFactory {
     private final static QName _DateNaissance_QNAME = new QName("http://www.abes.fr/abes/documents/tef", "dateNaissance");
     private final static QName _ThesisDegreeLevel_QNAME = new QName("http://www.abes.fr/abes/documents/tef", "thesis.degree.level");
     private final static QName _ContratDoctoral_QNAME = new QName("http://www.theses.fr/namespace/sujets", "contratDoctoral");
+    private final static QName _ISBN_QNAME = new QName("http://www.theses.fr/namespace/tefudoc", "ISBN");
     private final static QName _Name_QNAME = new QName("http://www.loc.gov/METS/", "name");
     private final static QName _Nom_QNAME = new QName("http://www.abes.fr/abes/documents/tef", "nom");
     private final static QName _BiblioIndex_QNAME = new QName("http://www.theses.fr/namespace/tefudoc", "biblioIndex");
@@ -130,6 +131,30 @@ public class ObjectFactory {
      */
     public AutoriteExterne createAutoriteExterne() {
         return new AutoriteExterne();
+    }
+
+    /**
+     * Create an instance of {@link VedetteRameauFamille }
+     * 
+     */
+    public VedetteRameauFamille createVedetteRameauFamille() {
+        return new VedetteRameauFamille();
+    }
+
+    /**
+     * Create an instance of {@link ElementdEntree }
+     * 
+     */
+    public ElementdEntree createElementdEntree() {
+        return new ElementdEntree();
+    }
+
+    /**
+     * Create an instance of {@link Subdivision }
+     * 
+     */
+    public Subdivision createSubdivision() {
+        return new Subdivision();
     }
 
     /**
@@ -245,19 +270,43 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ElementdEntree }
+     * Create an instance of {@link VedetteRameauAuteurTitre }
      * 
      */
-    public ElementdEntree createElementdEntree() {
-        return new ElementdEntree();
+    public VedetteRameauAuteurTitre createVedetteRameauAuteurTitre() {
+        return new VedetteRameauAuteurTitre();
     }
 
     /**
-     * Create an instance of {@link Subdivision }
+     * Create an instance of {@link VedetteRameauCollectivite }
      * 
      */
-    public Subdivision createSubdivision() {
-        return new Subdivision();
+    public VedetteRameauCollectivite createVedetteRameauCollectivite() {
+        return new VedetteRameauCollectivite();
+    }
+
+    /**
+     * Create an instance of {@link VedetteRameauNomGeographique }
+     * 
+     */
+    public VedetteRameauNomGeographique createVedetteRameauNomGeographique() {
+        return new VedetteRameauNomGeographique();
+    }
+
+    /**
+     * Create an instance of {@link VedetteRameauPersonne }
+     * 
+     */
+    public VedetteRameauPersonne createVedetteRameauPersonne() {
+        return new VedetteRameauPersonne();
+    }
+
+    /**
+     * Create an instance of {@link VedetteRameauTitre }
+     * 
+     */
+    public VedetteRameauTitre createVedetteRameauTitre() {
+        return new VedetteRameauTitre();
     }
 
     /**
@@ -736,6 +785,16 @@ public class ObjectFactory {
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     public JAXBElement<String> createContratDoctoral(String value) {
         return new JAXBElement<String>(_ContratDoctoral_QNAME, String.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.theses.fr/namespace/tefudoc", name = "ISBN")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    public JAXBElement<String> createISBN(String value) {
+        return new JAXBElement<String>(_ISBN_QNAME, String.class, null, value);
     }
 
     /**
