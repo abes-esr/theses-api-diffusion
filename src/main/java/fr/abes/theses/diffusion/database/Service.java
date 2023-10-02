@@ -42,7 +42,7 @@ public class Service {
 
     public Boolean verifieNnt(String nnt) throws Exception {
 
-        String regex = "[1-2][0-9][0-9][0-9][A-Z][A-Z][A-Z][A-Z][0-9A-Z][0-9A-Z][0-9A-Z][0-9A-Z]";
+        String regex = "\\d{4}[A-Z]{2}[0-9A-Z]{2}[0-9A-Z]{4}";
         Pattern p = Pattern.compile(regex);
         Matcher m = p.matcher(nnt);
         return m.matches();
