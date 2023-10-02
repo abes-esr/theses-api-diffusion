@@ -20,6 +20,11 @@ public class Service {
         return jdbcTemplate.queryForObject(sql, new TheseRowMapper(), nnt);
     }
 
+    public Anrt findAnrtByNnt (String nnt) {
+        String sql = "select distinct(url) from ANRT_CORRESP where nnt=?";
+        return jdbcTemplate.queryForObject(sql, new AnrtRowMapper(), nnt);
+    }
+
     public These renvoieThese(String nnt) throws Exception {
         if (!verifieNnt(nnt)) {
             throw new Exception("nnt incorrect");
@@ -28,6 +33,7 @@ public class Service {
         these.initTef();
         return these;
     }
+
     public Boolean verifieNnt(String nnt) throws Exception {
 
         String regex = "[1-2][0-9][0-9][0-9][A-Z][A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]";

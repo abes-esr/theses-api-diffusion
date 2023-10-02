@@ -1,6 +1,7 @@
 package fr.abes.theses.diffusion.controller;
 
 import fr.abes.theses.diffusion.buttons.*;
+import fr.abes.theses.diffusion.database.Anrt;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Identifier;
 import fr.abes.theses.diffusion.service.Diffusion;
@@ -236,6 +237,15 @@ public class BoutonController {
                 responseBoutons.getCategories().get(0).getSousCategories().get(1).getBoutons().add(bouton);
             }
 
+            if (dmdSec.getID().contains("EDITION_COM_ELEC")) {
+                Bouton bouton = new Bouton();
+                bouton.setLibelle("Accès en ligne  à une version remaniée par l'auteur");
+                bouton.setUrl(recupereUrlNonSudoc(dmdSec));
+                bouton.setTypeAcces(TypeAcces.SUDOC);
+                // autres versions
+                responseBoutons.getCategories().get(1).getBoutons().add(bouton);
+            }
+
             if (dmdSec.getID().contains("EDITION_COM_PAPIER_1")) {
                 Bouton bouton = new Bouton();
                 bouton.setLibelle("Accès en bibliothèque à la version publiée chez un éditeur");
@@ -260,15 +270,16 @@ public class BoutonController {
                     }
                 }
             }
+        }
 
-            if (dmdSec.getID().contains("EDITION_COM_ELEC")) {
-                Bouton bouton = new Bouton();
-                bouton.setLibelle("Accès en ligne  à une version remaniée par l'auteur");
-                bouton.setUrl(recupereUrlNonSudoc(dmdSec));
-                bouton.setTypeAcces(TypeAcces.SUDOC);
-                // autres versions
-                responseBoutons.getCategories().get(1).getBoutons().add(bouton);
-            }
+        Anrt anrt = service.findAnrtByNnt(nnt);
+        if (!anrt.getUrl().isEmpty()) {
+            Bouton bouton = new Bouton();
+            bouton.setLibelle("Achat d'une impression à l'ANRT");
+            bouton.setUrl(anrt.getUrl());
+            bouton.setTypeAcces(TypeAcces.SUDOC);
+            // autres versions
+            responseBoutons.getCategories().get(1).getBoutons().add(bouton);
         }
     }
 
