@@ -72,19 +72,23 @@ public class VerificationDroits {
         return restriction;
     }
 
-    private String getRestrictionTemporelleType (Mets tef, String nnt) throws Exception {
+    /**
+     * retourne la restriction temporelle si elle existe, chaine vide si le champ est absent du tef ou vide
+     * @param tef
+     * @param nnt
+     * @return
+     */
+    private String getRestrictionTemporelleType (Mets tef, String nnt) {
         log.info("Récupération de restriction temporelle type ");
-        String restrictionTemporelleType;
+        String restrictionTemporelleType = "sansObjet";
         try {
             if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
                     .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getRestrictionTemporelleType().isEmpty())
                 restrictionTemporelleType = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
                         .getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties().getDiffusion().getRestrictionTemporelleType();
-            else
-                throw new Exception("restriction temporelle type est vide");
+
         } catch (NullPointerException e) {
             log.error("Erreur pour récupérer la restriction temporelle type de " + nnt + "," + e.getMessage());
-            throw e;
         }
         return restrictionTemporelleType;
     }

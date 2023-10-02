@@ -23,7 +23,6 @@ import java.util.Optional;
 
 @Slf4j
 @Component
-
 public class Diffusion {
 
     @Value("${tel.userId}")

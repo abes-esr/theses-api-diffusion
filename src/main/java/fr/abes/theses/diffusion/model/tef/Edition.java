@@ -2,7 +2,7 @@
 // Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
-// Généré le : 2023.09.01 à 06:07:01 PM CEST 
+// Généré le : 2023.09.29 à 06:05:38 PM CEST 
 //
 
 
@@ -14,7 +14,10 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -29,6 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element ref="{http://purl.org/dc/elements/1.1/}identifier" maxOccurs="unbounded"/>
  *         &lt;sequence minOccurs="0">
+ *           &lt;element ref="{http://www.theses.fr/namespace/tefudoc}ISBN"/>
  *           &lt;element ref="{http://www.theses.fr/namespace/tefudoc}collation"/>
  *           &lt;element ref="{http://www.theses.fr/namespace/tefudoc}biblioIndex"/>
  *           &lt;element ref="{http://www.theses.fr/namespace/tefudoc}noteGenerale"/>
@@ -45,6 +49,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "identifier",
+    "isbn",
     "collation",
     "biblioIndex",
     "noteGenerale",
@@ -55,6 +60,10 @@ public class Edition {
 
     @XmlElement(namespace = "http://purl.org/dc/elements/1.1/", required = true)
     protected List<Identifier> identifier;
+    @XmlElement(name = "ISBN", namespace = "http://www.theses.fr/namespace/tefudoc")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "NMTOKEN")
+    protected String isbn;
     @XmlElement(namespace = "http://www.theses.fr/namespace/tefudoc")
     protected String collation;
     @XmlElement(namespace = "http://www.theses.fr/namespace/tefudoc")
@@ -91,6 +100,30 @@ public class Edition {
             identifier = new ArrayList<Identifier>();
         }
         return this.identifier;
+    }
+
+    /**
+     * Obtient la valeur de la propriété isbn.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getISBN() {
+        return isbn;
+    }
+
+    /**
+     * Définit la valeur de la propriété isbn.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setISBN(String value) {
+        this.isbn = value;
     }
 
     /**
