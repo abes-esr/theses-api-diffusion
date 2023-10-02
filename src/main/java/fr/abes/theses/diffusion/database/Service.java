@@ -1,6 +1,7 @@
 package fr.abes.theses.diffusion.database;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,8 +22,13 @@ public class Service {
     }
 
     public Anrt findAnrtByNnt (String nnt) {
-        String sql = "select distinct(url) from ANRT_CORRESP where nnt=?";
-        return jdbcTemplate.queryForObject(sql, new AnrtRowMapper(), nnt);
+        try {
+            String sql = "select distinct(url) from ANRT_CORRESP where nnt=?";
+            return jdbcTemplate.queryForObject(sql, new AnrtRowMapper(), nnt);
+        }
+        catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     public These renvoieThese(String nnt) throws Exception {

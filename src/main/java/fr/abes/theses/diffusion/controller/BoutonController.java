@@ -273,7 +273,7 @@ public class BoutonController {
         }
 
         Anrt anrt = service.findAnrtByNnt(nnt);
-        if (!anrt.getUrl().isEmpty()) {
+        if (anrt != null) {
             Bouton bouton = new Bouton();
             bouton.setLibelle("Achat d'une impression à l'ANRT");
             bouton.setUrl(anrt.getUrl());
