@@ -88,6 +88,7 @@ public class BoutonController {
             responseBoutons.getCategories().get(0).getSousCategories().get(0).getBoutons().add(bouton);
         }
 
+        /*
         if (cas1cas2
                 && restriction.getType().equals(TypeRestriction.EMBARGO)) {
 
@@ -104,7 +105,7 @@ public class BoutonController {
             responseBoutons.getCategories().get(0).getSousCategories().get(0).getBoutons().add(libelleEmbargo);
 
         }
-
+        */
         if (cas3cas4
                 && restriction.getType().equals(TypeRestriction.AUCUNE)) {
 
@@ -118,6 +119,7 @@ public class BoutonController {
 
         }
 
+        /*
         if (scenario.equals("cas3") && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
             Bouton bouton = new Bouton();
@@ -134,7 +136,7 @@ public class BoutonController {
             }
 
         }
-
+        */
         if (scenario.equals("cas4")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
                 && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
@@ -157,6 +159,7 @@ public class BoutonController {
 
         }
 
+        /*
         if (scenario.equals("cas5")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
@@ -169,7 +172,7 @@ public class BoutonController {
             responseBoutons.getCategories().get(0).getSousCategories().get(0).getBoutons().add(bouton);
 
         }
-
+        */
 
         if (scenario.equals("cas6")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)

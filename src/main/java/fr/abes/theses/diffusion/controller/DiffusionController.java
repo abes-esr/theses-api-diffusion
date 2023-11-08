@@ -37,6 +37,7 @@ public class DiffusionController {
      * @return
      * @throws Exception
      */
+    /*
     @GetMapping(value = "document/protected/{nnt}")
     public ResponseEntity<byte[]> documentProtected(
             @PathVariable
@@ -58,6 +59,7 @@ public class DiffusionController {
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
+    */
 
     /**
      * Renvoie les thèses disponibles en accès libre
