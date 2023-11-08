@@ -10,13 +10,9 @@ package fr.abes.theses.diffusion.model.tef;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -29,9 +25,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element ref="{http://www.loc.gov/METS/}div"/>
+ *         &lt;element ref="{http://www.abes.fr/abes/documents/tef}elementdEntree"/>
+ *         &lt;element ref="{http://www.abes.fr/abes/documents/tef}subdivision"/>
  *       &lt;/sequence>
- *       &lt;attribute name="TYPE" use="required" type="{http://www.w3.org/2001/XMLSchema}NCName" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -41,64 +37,63 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "div"
+    "elementdEntree",
+    "subdivision"
 })
-@XmlRootElement(name = "structMap", namespace = "http://www.loc.gov/METS/")
-public class StructMap {
+@XmlRootElement(name = "vedetteRameauCollectivite")
+public class VedetteRameauCollectivite {
 
-    @XmlElement(namespace = "http://www.loc.gov/METS/", required = true)
-    protected Div div;
-    @XmlAttribute(name = "TYPE", required = true)
-    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-    @XmlSchemaType(name = "NCName")
-    protected String type;
+    @XmlElement(required = true)
+    protected ElementdEntree elementdEntree;
+    @XmlElement(required = true)
+    protected Subdivision subdivision;
 
     /**
-     * Obtient la valeur de la propriété div.
+     * Obtient la valeur de la propriété elementdEntree.
      * 
      * @return
      *     possible object is
-     *     {@link Div }
+     *     {@link ElementdEntree }
      *     
      */
-    public Div getDiv() {
-        return div;
+    public ElementdEntree getElementdEntree() {
+        return elementdEntree;
     }
 
     /**
-     * Définit la valeur de la propriété div.
+     * Définit la valeur de la propriété elementdEntree.
      * 
      * @param value
      *     allowed object is
-     *     {@link Div }
+     *     {@link ElementdEntree }
      *     
      */
-    public void setDiv(Div value) {
-        this.div = value;
+    public void setElementdEntree(ElementdEntree value) {
+        this.elementdEntree = value;
     }
 
     /**
-     * Obtient la valeur de la propriété type.
+     * Obtient la valeur de la propriété subdivision.
      * 
      * @return
      *     possible object is
-     *     {@link String }
+     *     {@link Subdivision }
      *     
      */
-    public String getTYPE() {
-        return type;
+    public Subdivision getSubdivision() {
+        return subdivision;
     }
 
     /**
-     * Définit la valeur de la propriété type.
+     * Définit la valeur de la propriété subdivision.
      * 
      * @param value
      *     allowed object is
-     *     {@link String }
+     *     {@link Subdivision }
      *     
      */
-    public void setTYPE(String value) {
-        this.type = value;
+    public void setSubdivision(Subdivision value) {
+        this.subdivision = value;
     }
 
 }

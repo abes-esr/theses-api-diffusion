@@ -7,6 +7,6 @@ import java.util.List;
 
 @Getter
 @Setter
-public class ResponseButtons {
-    private List<Button> buttons;
+public class ResponseBoutons {
+    private List<Categorie> categories;
 }
