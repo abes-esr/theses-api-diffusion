@@ -136,15 +136,18 @@ public class DiffusionController {
     }
 
     /**
-     * Renvoie le lien de téléchargement du fichier pour le CCSD
+     * Renvoie le lien de téléchargement du fichier
      * @param nnt
      * @return
      * @throws Exception
      */
-    @GetMapping(value = "document/ccsd/{nnt}")
-    public ResponseEntity<byte[]> documentPourCcsd(
+    @GetMapping(value = "document/{nnt}/{nomFichierAvecCheminLocal}")
+    public ResponseEntity<byte[]> accesDirectAuFichier(
             @PathVariable
-            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt) throws Exception {
+            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt,
+            @PathVariable
+            @ApiParam(name = "nomFichierAvecCheminLocal", value = "chemin local vers le fichier de thèse ou de l'une de ses annexes", example = "/0/0/these.pdf") String nomFichierAvecCheminLocal,
+            HttpServletResponse response) throws Exception {
 
         if (!service.verifieNnt(nnt)) {
             log.error("nnt incorrect");
@@ -153,8 +156,12 @@ public class DiffusionController {
 
         These these = service.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
-        if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CCSD)) {
+
+        if ((scenario.equals("cas1") || scenario.equals("cas2")
+                || scenario.equals("cas3") || scenario.equals("cas4"))
+                && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
+
+            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, nomFichierAvecCheminLocal, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();

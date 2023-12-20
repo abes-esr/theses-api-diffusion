@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -221,6 +222,38 @@ public class Diffusion {
             return "Ce fichier n'a pas pu être trouvé".getBytes();
         } catch (Exception e) {
             log.error("erreur dans diffusionAbes : " + e);
+            throw e;
+        }
+    }
+
+    public byte[] diffusionAccesDirectAuFichier (Mets tef, String nnt, String nomFichierAvecCheminLocal, TypeAcces typeAcces, HttpServletResponse response) throws Exception {
+
+        String codeEtab = "";
+        String scenario = "";
+        String idThese = "";
+
+        try {
+            Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
+            if (starGestion.isPresent()) {
+
+                codeEtab = starGestion.get().getMdWrap().getXmlData().getStarGestion().getCodeEtab();
+                scenario = starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getScenario();
+                idThese = starGestion.get().getMdWrap().getXmlData().getStarGestion().getIDTHESE();
+            }
+
+            String chemin = thesesPathLocal + codeEtab + "/" + idThese + "/document/";
+            String rep = this.versionADiffuser(scenario, typeAcces);
+            chemin += rep;
+
+            if (!rep.equals("")) {
+                File f = new File(chemin + nomFichierAvecCheminLocal);
+                if (f.exists()) {
+                    serviceFichiers.renvoyerFichier(response, chemin + nomFichierAvecCheminLocal);
+                }
+            }
+            return "Ce fichier n'a pas pu être trouvé".getBytes();
+        } catch (Exception e) {
+            log.error("erreur dans diffusionAccesDirectAuFichier : " + e);
             throw e;
         }
     }
