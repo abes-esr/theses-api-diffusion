@@ -15,7 +15,6 @@ public class These {
 
     private String doc;
     private String ips;
-
     private Mets tef;
 
     public These(XMLJsonMarshalling marshall) {

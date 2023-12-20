@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -90,7 +91,6 @@ public class Diffusion {
                 try {
                     iteratorIdentifier = dmdSec.getMdWrap().getXmlData().getEdition().getIdentifier().iterator();
                 } catch (NullPointerException e) {
-                    log.info("pas dans ce bloc...");
                     continue;
                 }
 
@@ -123,7 +123,7 @@ public class Diffusion {
 
             if (urlRepond) {
                 if (!dryRun) {
-                    log.info("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
+                    log.debug("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
                     response.sendRedirect(urlEtab);
                 }
                 documentServi = true;
@@ -160,7 +160,7 @@ public class Diffusion {
                     urlRepond = telOk(identifiantCcsd);
 
                     if (urlRepond) {
-                        log.info("redirection dans diffusionCcsd : " + urlCcsd);
+                        log.debug("redirection dans diffusionCcsd : " + urlCcsd);
                         response.sendRedirect(urlCcsd);
                         documentServi = true;
                     }
@@ -195,14 +195,14 @@ public class Diffusion {
             String rep = this.versionADiffuser(scenario, typeAcces);
             chemin += rep;
 
-            log.info("Diffusion => Abes diffuseur : scenario=" + scenario + " chemin=" + chemin);
+            log.debug("Diffusion => Abes diffuseur : scenario=" + scenario + " chemin=" + chemin);
             if (!rep.equals("")) {
                 List<String> liste = new ArrayList<>();
                 serviceFichiers.listerFichiers(chemin, liste);
                 if (liste.size() > 0) {
                     // Renvoie l'unique fichier du répertoire
                     if (liste.size() == 1) {
-                        log.info("un seul fichier dans le répertoire :" + liste.get(0));
+                        log.debug("un seul fichier dans le répertoire :" + liste.get(0));
                         serviceFichiers.renvoyerFichier(response, liste.get(0));
                     } else { // Sinon renvoie la liste des
                         // fichiers
@@ -245,13 +245,14 @@ public class Diffusion {
             String rep = this.versionADiffuser(scenario, typeAcces);
             chemin += rep;
 
+            log.info("recherche de " + chemin + nomFichierAvecCheminLocal);
             if (!rep.equals("")) {
                 File f = new File(chemin + nomFichierAvecCheminLocal);
                 if (f.exists()) {
                     serviceFichiers.renvoyerFichier(response, chemin + nomFichierAvecCheminLocal);
                 }
             }
-            return "Ce fichier n'a pas pu être trouvé".getBytes();
+            return "Fichier introuvable".getBytes();
         } catch (Exception e) {
             log.error("erreur dans diffusionAccesDirectAuFichier : " + e);
             throw e;
@@ -377,7 +378,7 @@ public class Diffusion {
             }
 
             String result = buf.toString();
-            log.info("\nDans telOk : Response from server after GET :\n" + result);
+            log.debug("\nDans telOk : Response from server after GET :\n" + result);
 
             if (result.contains("<status>accept")) {
                 reponse = true;
