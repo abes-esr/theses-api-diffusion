@@ -84,11 +84,18 @@ public class DiffusionController {
                 && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
 
             // diffusion par l'établissement
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
-                return ResponseEntity.status(HttpStatus.OK).build();
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt)) {
+
+                diffusion.redirectionEtabAvecUneSeuleUrl(these.getTef(), response, false);
+            }
+            // renvoie une liste de liens sur l'établissement
+            if (diffusion.diffusionEtablissementAvecPlusieursUrls(these.getTef(), nnt)) {
+                return new ResponseEntity<>(diffusion.listeFichiersEtablissement(these.getTef()), HttpStatus.OK);
+            }
             // diffusion par le CCSD
-            if (diffusion.diffusionCcsd(these.getTef(), nnt, response))
-                return ResponseEntity.status(HttpStatus.OK).build();
+            if (diffusion.diffusionCcsd(these.getTef(), nnt)) {
+                diffusion.redirectionCcsd(these.getTef(), response);;
+            }
             // diffusion par l'Abes
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
 
@@ -118,16 +125,16 @@ public class DiffusionController {
 
         // cas 4 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond (url dans les identifier)
         if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
-            if (diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, response, false))
-                return ResponseEntity.status(HttpStatus.OK).build();
+            if (diffusion.diffusionEtablissementIntranet(these.getTef()))
+                diffusion.redirectionEtablissementIntranet(these.getTef(), response);
             else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         // cas 6 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond (url dans le bloc de gestion du tef)
         if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) {
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
-                return ResponseEntity.status(HttpStatus.OK).build();
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt))
+                diffusion.redirectionEtabAvecUneSeuleUrl(these.getTef(), response, false);
             else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

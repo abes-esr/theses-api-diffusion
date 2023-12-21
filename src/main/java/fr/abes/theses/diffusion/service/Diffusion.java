@@ -1,6 +1,7 @@
 package fr.abes.theses.diffusion.service;
 
 import fr.abes.theses.diffusion.model.tef.Identifier;
+import fr.abes.theses.diffusion.model.tef.XmlData;
 import fr.abes.theses.diffusion.utils.TypeAcces;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Mets;
@@ -42,17 +43,14 @@ public class Diffusion {
     ServiceFichiers serviceFichiers;
 
     /**
-     * permet la diffusion de la thèse lorqu'elle est publiée par l'établissement
+     * vérifie si la diffusion de la thèse doit se faire via l'établissement
      * @param tef permet de vérifier que l'établissement veut et peut diffuser la thèse
      * @param nnt identifiant de la thèse
-     * @param response permet de rediriger sur l'établissement
-     * @param dryRun permet de vérifier que la diffusion est possible sans lancer la diffusion
      * @return booléen indiquant si la diffusion par l'établissement est possible
      */
-    public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt, HttpServletResponse response, boolean dryRun) {
+    public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt) {
 
         Boolean urlRepond;
-        Boolean documentServi = false;
         try {
             Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
             if (starGestion.isPresent()) {
@@ -65,71 +63,135 @@ public class Diffusion {
 
                     String urlEtab = starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
                             .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().get(0).getValue().trim();
+                    // Vérification que l'établissement n'a pas saisi une url theses.fr (risque de boucle infinie)
+                    if (!urlEtab.contains("theses.fr")) {
+                        urlEtab = formateUrl(urlEtab);
 
-                    documentServi = redirigeSurUrlEtablissement(response, dryRun, documentServi, urlEtab);
+                        // Vérification que le fichier est bien disponible à l'url donnée
+                        urlRepond = this.urlExists(urlEtab);
+
+                        if (urlRepond) {
+                            return true;
+                        }
+                    }
                 }
             }
-            return documentServi;
+            return false;
         } catch (NullPointerException e) {
             log.error("Erreur pour récupérer getEtabDiffuseurPolEtablissement de ".concat(nnt).concat(e.getMessage()));
             throw e;
-        } catch (IOException e) {
-            log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
-            throw new RuntimeException(e);
+        }
+    }
+    public void redirectionEtabAvecUneSeuleUrl(Mets tef, HttpServletResponse response, boolean dryRun) {
+        Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
+
+        String urlEtab = starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
+                .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().get(0).getValue().trim();
+
+        try {
+            redirectionSurUrl(response, dryRun, urlEtab);
+        }
+        catch (IOException e) {
+                log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
         }
     }
 
-    public Boolean diffusionEtablissementIntranet(Mets tef, String nnt, HttpServletResponse response, boolean dryRun) {
+    public Boolean diffusionEtablissementAvecPlusieursUrls(Mets tef, String nnt) {
 
-        Boolean urlRepond;
-        Boolean documentServi = false;
         try {
-            Iterator<DmdSec> iterator = tef.getDmdSec().iterator();
-            while (iterator.hasNext()) {
-                DmdSec dmdSec = iterator.next();
-                Iterator<Identifier> iteratorIdentifier;
-                try {
-                    iteratorIdentifier = dmdSec.getMdWrap().getXmlData().getEdition().getIdentifier().iterator();
-                } catch (NullPointerException e) {
-                    continue;
-                }
+            Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
+            if (starGestion.isPresent()) {
+                if (starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
+                        .getDiffusion().getEtabDiffuseur().getEtabDiffuseurPolEtablissement().equals("oui")
+                        && starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
+                        .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().size() > 1
+                        && !starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
+                        .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().get(0).getValue().trim().isEmpty()) {
 
-                String urlEtab = "";
-                while (iteratorIdentifier.hasNext()) {
-                    Identifier identifier = iteratorIdentifier.next();
-                    if (this.estUrlIntranetEtab(identifier.getValue().trim())) {
-                        urlEtab = identifier.getValue().trim();
+                    return true;
+                }
+            }
+            return false;
+        } catch (NullPointerException e) {
+            log.error("Erreur pour récupérer getEtabDiffuseurPolEtablissement de ".concat(nnt).concat(e.getMessage()));
+            throw e;
+        }
+    }
+    public byte[] listeFichiersEtablissement(Mets tef)  {
+        Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
+        Iterator<XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur> iterator =
+                starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
+                .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().iterator();
+        String listeFichiers = "";
+        listeFichiers = "<ul class='listeFichiers'>";
+        while (iterator.hasNext()) {
+
+            XmlData.StarGestion.Traitements.Sorties.Diffusion.EtabDiffuseur.UrlEtabDiffuseur urlEtabDiffuseur = iterator.next();
+
+            listeFichiers += "<li><a href=\"" + urlEtabDiffuseur.getValue() + "\">" + urlEtabDiffuseur.getValue() + "</a></li>";
+
+        }
+        listeFichiers += "</ul>";
+        return listeFichiers.getBytes();
+    }
+
+
+    public Boolean diffusionEtablissementIntranet(Mets tef) {
+
+
+        Iterator<DmdSec> iterator = tef.getDmdSec().iterator();
+        while (iterator.hasNext()) {
+            DmdSec dmdSec = iterator.next();
+            Iterator<Identifier> iteratorIdentifier;
+            try {
+                iteratorIdentifier = dmdSec.getMdWrap().getXmlData().getEdition().getIdentifier().iterator();
+            } catch (NullPointerException e) {
+                continue;
+            }
+
+
+            while (iteratorIdentifier.hasNext()) {
+                Identifier identifier = iteratorIdentifier.next();
+                if (this.estUrlIntranetEtab(identifier.getValue().trim())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+    public void redirectionEtablissementIntranet(Mets tef, HttpServletResponse response) {
+        Iterator<DmdSec> iterator = tef.getDmdSec().iterator();
+        while (iterator.hasNext()) {
+            DmdSec dmdSec = iterator.next();
+            Iterator<Identifier> iteratorIdentifier;
+            try {
+                iteratorIdentifier = dmdSec.getMdWrap().getXmlData().getEdition().getIdentifier().iterator();
+            } catch (NullPointerException e) {
+                continue;
+            }
+
+
+            while (iteratorIdentifier.hasNext()) {
+                Identifier identifier = iteratorIdentifier.next();
+                if (this.estUrlIntranetEtab(identifier.getValue().trim())) {
+                    try {
+                        redirectionSurUrl(response, false, identifier.getValue().trim());
+
+                    }
+                    catch (IOException e) {
+                        log.error("Erreur lors de la redirection vers l'url intranet de l'établissement : ".concat(e.toString()));
                     }
                 }
-                documentServi = redirigeSurUrlEtablissement(response, dryRun, documentServi, urlEtab);
-
             }
-
-            return documentServi;
-        } catch (IOException e) {
-            log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
-            throw new RuntimeException(e);
         }
     }
+    private void redirectionSurUrl(HttpServletResponse response, boolean dryRun, String url) throws IOException {
 
-    private Boolean redirigeSurUrlEtablissement(HttpServletResponse response, boolean dryRun, Boolean documentServi, String urlEtab) throws IOException {
-        Boolean urlRepond;
-        // Vérification que l'établissement n'a pas saisi une url theses.fr (risque de boucle infinie)
-        if (!urlEtab.contains("theses.fr")) {
-            urlEtab = formateUrl(urlEtab);
-
-            // Vérification que le fichier est bien disponible à l'url donnée
-            urlRepond = this.urlExists(urlEtab);
-
-            if (urlRepond) {
-                if (!dryRun) {
-                    log.debug("redirection dans diffusionEtablissementAvecUneSeuleUrl : " + urlEtab);
-                    response.sendRedirect(urlEtab);
-                }
-                documentServi = true;
-            }
+        if (!dryRun) {
+            log.debug("redirection sur : " + url);
+            response.sendRedirect(url);
         }
-        return documentServi;
     }
 
     private Boolean estUrlIntranetEtab (String url) {
@@ -139,10 +201,10 @@ public class Diffusion {
         return false;
     }
 
-    public Boolean diffusionCcsd (Mets tef, String nnt, HttpServletResponse response) {
+    public Boolean diffusionCcsd (Mets tef, String nnt) {
 
         Boolean urlRepond;
-        Boolean documentServi = false;
+
         try {
             Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
             if (starGestion.isPresent()) {
@@ -160,20 +222,28 @@ public class Diffusion {
                     urlRepond = telOk(identifiantCcsd);
 
                     if (urlRepond) {
-                        log.debug("redirection dans diffusionCcsd : " + urlCcsd);
-                        response.sendRedirect(urlCcsd);
-                        documentServi = true;
+                        return true;
                     }
                 }
             }
-            return documentServi;
+            return false;
         } catch (NullPointerException e) {
             log.error("Erreur pour récupérer getEtabDiffuseurPolEtablissement de ".concat(nnt).concat(e.getMessage()));
             throw e;
-        } catch (IOException e) {
-            log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
-            throw new RuntimeException(e);
         }
+    }
+    public void redirectionCcsd (Mets tef, HttpServletResponse response) {
+        Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
+        String urlCcsd = starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
+                .getDiffusion().getCcsd().getUrlCcsd().trim();
+        urlCcsd = formateUrl(urlCcsd);
+        try {
+            redirectionSurUrl(response, false, urlCcsd);
+        }
+        catch (IOException e) {
+            log.error("Erreur lors de la redirection vers l'url du ccsd : ".concat(e.toString()));
+        }
+
     }
 
     public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeAcces, HttpServletResponse response) throws Exception {
