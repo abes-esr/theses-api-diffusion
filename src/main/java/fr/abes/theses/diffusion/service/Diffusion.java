@@ -211,7 +211,7 @@ public class Diffusion {
                         for (String fichier : liste) {
                             String nomFic = fichier.substring(fichier.indexOf("document") + 13)
                                     .replace("\\", "/");
-                            listeFichiers += "<li><a href=\"" + urlPortail + nnt + "/abes/"
+                            listeFichiers += "<li><a href=\"" + urlPortail + nnt + "/"
                                     + nomFic.replaceAll(" ", "_-_") + "\">" + nomFic + "</a></li>";
                         }
                         listeFichiers += "</ul>";
@@ -252,7 +252,8 @@ public class Diffusion {
                     serviceFichiers.renvoyerFichier(response, chemin + nomFichierAvecCheminLocal);
                 }
             }
-            return "Fichier introuvable".getBytes();
+            throw new FileNotFoundException();
+
         } catch (Exception e) {
             log.error("erreur dans diffusionAccesDirectAuFichier : " + e);
             throw e;
