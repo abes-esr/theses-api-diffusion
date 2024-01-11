@@ -87,6 +87,7 @@ public class DiffusionController {
             if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt)) {
 
                 diffusion.redirectionEtabAvecUneSeuleUrl(these.getTef(), response, false);
+                return ResponseEntity.status(HttpStatus.OK).build();
             }
             // renvoie une liste de liens sur l'établissement
             if (diffusion.diffusionEtablissementAvecPlusieursUrls(these.getTef(), nnt)) {
@@ -94,7 +95,8 @@ public class DiffusionController {
             }
             // diffusion par le CCSD
             if (diffusion.diffusionCcsd(these.getTef(), nnt)) {
-                diffusion.redirectionCcsd(these.getTef(), response);;
+                diffusion.redirectionCcsd(these.getTef(), response);
+                return ResponseEntity.status(HttpStatus.OK).build();
             }
             // diffusion par l'Abes
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
