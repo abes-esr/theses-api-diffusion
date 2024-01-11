@@ -50,6 +50,7 @@ public class Diffusion {
      */
     public Boolean diffusionEtablissementAvecUneSeuleUrl(Mets tef, String nnt) {
 
+        log.debug("diffusionEtablissementAvecUneSeuleUrl...");
         Boolean urlRepond;
         try {
             Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
@@ -71,6 +72,7 @@ public class Diffusion {
                         urlRepond = this.urlExists(urlEtab);
 
                         if (urlRepond) {
+                            log.debug("diffusionEtablissementAvecUneSeuleUrl, urlRepond = true");
                             return true;
                         }
                     }
@@ -83,6 +85,7 @@ public class Diffusion {
         }
     }
     public void redirectionEtabAvecUneSeuleUrl(Mets tef, HttpServletResponse response, boolean dryRun) {
+        log.debug("redirectionEtabAvecUneSeuleUrl...");
         Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
 
         String urlEtab = starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
@@ -97,7 +100,7 @@ public class Diffusion {
     }
 
     public Boolean diffusionEtablissementAvecPlusieursUrls(Mets tef, String nnt) {
-
+        log.debug("diffusionEtablissementAvecPlusieursUrls...");
         try {
             Optional<DmdSec> starGestion = tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst();
             if (starGestion.isPresent()) {
@@ -108,6 +111,7 @@ public class Diffusion {
                         && !starGestion.get().getMdWrap().getXmlData().getStarGestion().getTraitements().getSorties()
                         .getDiffusion().getEtabDiffuseur().getUrlEtabDiffuseur().get(0).getValue().trim().isEmpty()) {
 
+                    log.debug("diffusionEtablissementAvecPlusieursUrls : true");
                     return true;
                 }
             }
@@ -202,7 +206,7 @@ public class Diffusion {
     }
 
     public Boolean diffusionCcsd (Mets tef, String nnt) {
-
+        log.debug("diffusionCcsd...");
         Boolean urlRepond;
 
         try {
@@ -222,6 +226,7 @@ public class Diffusion {
                     urlRepond = telOk(identifiantCcsd);
 
                     if (urlRepond) {
+                        log.debug("diffusionCcsd, urlRepond = true");
                         return true;
                     }
                 }
@@ -248,6 +253,7 @@ public class Diffusion {
 
     public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeAcces, HttpServletResponse response) throws Exception {
 
+        log.debug("diffusionAbes...");
         String codeEtab = "";
         String scenario = "";
         String idThese = "";
