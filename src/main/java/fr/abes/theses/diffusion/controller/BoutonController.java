@@ -11,6 +11,9 @@ import fr.abes.theses.diffusion.database.Service;
 import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.service.VerificationDroits;
 import fr.abes.theses.diffusion.utils.TypeRestriction;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,8 +44,14 @@ public class BoutonController {
     @Autowired
     Diffusion diffusion;
 
+    @Operation(
+            summary = "Retourne une liste de boutons permettant l'accès aux fichiers de thèses",
+            description = "Les thèses peuvent être disponibles à plusieurs endroits et sous différentes formes, potentiellement être sous accès restreint, les boutons et leurs liens y donnent accès.")
+    @ApiResponse(responseCode = "400", description = "Le format du numéro national de thèse fourni est incorrect")
+    @ApiResponse(responseCode = "200", description = "Opération terminée avec succès")
+    @ApiResponse(responseCode = "500", description = "Service indisponible")
     @GetMapping(value = "button/{nnt}")
-    public ResponseEntity<ResponseBoutons> boutons(@PathVariable String nnt) {
+    public ResponseEntity<ResponseBoutons> boutons(@PathVariable @Parameter(name = "nnt", description = "Numéro National de Thèse", example = "2013MON30092") String nnt) {
 
         try {
             if (!service.verifieNnt(nnt)) {
