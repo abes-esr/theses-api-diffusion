@@ -55,8 +55,10 @@ public class BoutonController {
 
             These these = service.renvoieThese(nnt);
 
-            ajouteBoutonsStar(responseBoutons, these, nnt);
-            ajouteBoutonsSudoc(responseBoutons, these, nnt);
+            Restriction restriction = verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt);
+
+            ajouteBoutonsStar(responseBoutons, restriction, these, nnt);
+            ajouteBoutonsSudoc(responseBoutons, restriction, these, nnt);
 
             return new ResponseEntity<>(responseBoutons, HttpStatus.OK);
         }
@@ -67,10 +69,9 @@ public class BoutonController {
     }
 
 
-    private void ajouteBoutonsStar (ResponseBoutons responseBoutons, These these, String nnt) throws Exception {
+    private void ajouteBoutonsStar (ResponseBoutons responseBoutons, Restriction restriction, These these, String nnt) throws Exception {
 
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
-        Restriction restriction = verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt);
 
         boolean cas1cas2cas3 = scenario.equals("cas1") || scenario.equals("cas2") || scenario.equals("cas3");
         boolean cas1cas2 = scenario.equals("cas1") || scenario.equals("cas2");
@@ -139,7 +140,7 @@ public class BoutonController {
         */
         if (scenario.equals("cas4")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
-                && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
+                && diffusion.diffusionEtablissementIntranet(these.getTef())) {
 
             // bouton acces intranet établissement
             Bouton bouton = new Bouton();
@@ -176,7 +177,7 @@ public class BoutonController {
 
         if (scenario.equals("cas6")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
-                && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
+                && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt)) {
 
             Bouton bouton = new Bouton();
             bouton.setLibelle("Accès Intranet Etablissement");
@@ -198,13 +199,14 @@ public class BoutonController {
 
         }
     }
-    private void ajouteBoutonsSudoc (ResponseBoutons responseBoutons, These these, String nnt) {
+    private void ajouteBoutonsSudoc (ResponseBoutons responseBoutons, Restriction restriction, These these, String nnt) {
         Iterator<DmdSec> iterator = these.getTef().getDmdSec().iterator();
         while (iterator.hasNext()) {
 
             DmdSec dmdSec = iterator.next();
 
-            if (dmdSec.getID().contains("EDITION_DEPOT_NATIONAL")) {
+            if (!restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
+            && dmdSec.getID().contains("EDITION_DEPOT_NATIONAL")) {
                 Bouton bouton = new Bouton();
                 bouton.setLibelle("Accès en bibliothèque");
                 bouton.setUrl(recupereUrlSudoc(dmdSec));
@@ -242,7 +244,7 @@ public class BoutonController {
 
             if (dmdSec.getID().contains("EDITION_COM_ELEC")) {
                 Bouton bouton = new Bouton();
-                bouton.setLibelle("Accès en ligne  à une version remaniée par l'auteur");
+                bouton.setLibelle("Accès en ligne à une version remaniée par l'auteur");
                 bouton.setUrl(recupereUrlNonSudoc(dmdSec));
                 bouton.setTypeAcces(TypeAcces.SUDOC);
                 // autres versions

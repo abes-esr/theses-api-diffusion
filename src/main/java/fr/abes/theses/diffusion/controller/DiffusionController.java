@@ -84,11 +84,20 @@ public class DiffusionController {
                 && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
 
             // diffusion par l'établissement
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt)) {
+
+                diffusion.redirectionEtabAvecUneSeuleUrl(these.getTef(), response, false);
                 return ResponseEntity.status(HttpStatus.OK).build();
+            }
+            // renvoie une liste de liens sur l'établissement
+            if (diffusion.diffusionEtablissementAvecPlusieursUrls(these.getTef(), nnt)) {
+                return new ResponseEntity<>(diffusion.listeFichiersEtablissement(these.getTef()), HttpStatus.OK);
+            }
             // diffusion par le CCSD
-            if (diffusion.diffusionCcsd(these.getTef(), nnt, response))
+            if (diffusion.diffusionCcsd(these.getTef(), nnt)) {
+                diffusion.redirectionCcsd(these.getTef(), response);
                 return ResponseEntity.status(HttpStatus.OK).build();
+            }
             // diffusion par l'Abes
             return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
 
@@ -118,16 +127,16 @@ public class DiffusionController {
 
         // cas 4 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond (url dans les identifier)
         if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas4")) {
-            if (diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, response, false))
-                return ResponseEntity.status(HttpStatus.OK).build();
+            if (diffusion.diffusionEtablissementIntranet(these.getTef()))
+                diffusion.redirectionEtablissementIntranet(these.getTef(), response);
             else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         // cas 6 intranet, renvoie sur l'intranet de l'établissement si l'url est renseignée et répond (url dans le bloc de gestion du tef)
         if (verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) {
-            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, response, false))
-                return ResponseEntity.status(HttpStatus.OK).build();
+            if (diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt))
+                diffusion.redirectionEtabAvecUneSeuleUrl(these.getTef(), response, false);
             else
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
@@ -136,15 +145,18 @@ public class DiffusionController {
     }
 
     /**
-     * Renvoie le lien de téléchargement du fichier pour le CCSD
+     * Renvoie le lien de téléchargement du fichier
      * @param nnt
      * @return
      * @throws Exception
      */
-    @GetMapping(value = "document/ccsd/{nnt}")
-    public ResponseEntity<byte[]> documentPourCcsd(
+    @GetMapping(value = "document/{nnt}/{nomFichierAvecCheminLocal}")
+    public ResponseEntity<byte[]> accesDirectAuFichier(
             @PathVariable
-            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt) throws Exception {
+            @ApiParam(name = "nnt", value = "nnt de la thèse", example = "2023MON12345") String nnt,
+            @PathVariable
+            @ApiParam(name = "nomFichierAvecCheminLocal", value = "chemin local vers le fichier de thèse ou de l'une de ses annexes", example = "/0/0/these.pdf") String nomFichierAvecCheminLocal,
+            HttpServletResponse response) throws Exception {
 
         if (!service.verifieNnt(nnt)) {
             log.error("nnt incorrect");
@@ -153,8 +165,12 @@ public class DiffusionController {
 
         These these = service.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
-        if ((scenario.equals("cas1") || scenario.equals("cas2"))
-                && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CCSD)) {
+
+        if ((scenario.equals("cas1") || scenario.equals("cas2")
+                || scenario.equals("cas3") || scenario.equals("cas4"))
+                && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
+
+            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, nomFichierAvecCheminLocal, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
