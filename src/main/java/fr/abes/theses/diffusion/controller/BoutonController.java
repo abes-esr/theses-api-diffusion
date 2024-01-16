@@ -140,7 +140,7 @@ public class BoutonController {
         */
         if (scenario.equals("cas4")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
-                && diffusion.diffusionEtablissementIntranet(these.getTef(), nnt, null, true)) {
+                && diffusion.diffusionEtablissementIntranet(these.getTef())) {
 
             // bouton acces intranet établissement
             Bouton bouton = new Bouton();
@@ -177,7 +177,7 @@ public class BoutonController {
 
         if (scenario.equals("cas6")
                 && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)
-                && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt, null, true)) {
+                && diffusion.diffusionEtablissementAvecUneSeuleUrl(these.getTef(), nnt)) {
 
             Bouton bouton = new Bouton();
             bouton.setLibelle("Accès Intranet Etablissement");

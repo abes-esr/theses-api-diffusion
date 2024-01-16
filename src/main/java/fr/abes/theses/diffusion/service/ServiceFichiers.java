@@ -26,7 +26,7 @@ public class ServiceFichiers {
      */
     public void renvoyerFichier(HttpServletResponse response, String fichier) throws Exception {
 
-        log.info("début de renvoyerFichier, fichier : " + fichier);
+        log.debug("début de renvoyerFichier, fichier : " + fichier);
 
         ServletOutputStream stream = null;
         FileInputStream fs = null;
@@ -53,7 +53,7 @@ public class ServiceFichiers {
 
                 String nomFichier = this.extraitNomFichier(fichier);
 
-                log.info("dans renvoyerFichier, le nomFichier avec extension est : " + nomFichier);
+                log.debug("dans renvoyerFichier, le nomFichier avec extension est : " + nomFichier);
 
                 // Mis en fichier attaché (s'ouvre dans 1 autre fenetre de
                 // navigateur), sinon bug rencontré sur gros fichier
@@ -129,7 +129,7 @@ public class ServiceFichiers {
      * Liste tous les fichiers d'un répertoire (même les sous-répertoires)
      */
     public void listerFichiers(String chemin, List<String> liste) {
-        log.info("dans listerFichiers..." + chemin);
+        log.debug("dans listerFichiers..." + chemin);
 
         File f = new File(chemin);
         File[] listFiles = f.listFiles();
@@ -138,7 +138,7 @@ public class ServiceFichiers {
             if (file.isDirectory()) {
                 listerFichiers(file.getAbsolutePath(), liste);
             } else {
-                log.info(file.getAbsolutePath());
+                log.debug(file.getAbsolutePath());
                 liste.add(file.getAbsolutePath());
             }
         }

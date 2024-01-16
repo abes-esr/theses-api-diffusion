@@ -79,7 +79,7 @@ public class VerificationDroits {
      * @return
      */
     private String getRestrictionTemporelleType (Mets tef, String nnt) {
-        log.info("Récupération de restriction temporelle type ");
+        log.debug("Récupération de restriction temporelle type ");
         String restrictionTemporelleType = "sansObjet";
         try {
             if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
@@ -93,7 +93,7 @@ public class VerificationDroits {
         return restrictionTemporelleType;
     }
     private String getRestrictionTemporelleFin (Mets tef, String nnt) throws Exception {
-        log.info("Récupération de restriction temporelle fin ");
+        log.debug("Récupération de restriction temporelle fin ");
         String restrictionTemporelleFin;
         try {
             if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
@@ -110,7 +110,7 @@ public class VerificationDroits {
     }
 
     private String getEmbargoFin (Mets tef, String nnt) throws Exception {
-        log.info("Récupération de embargo fin ");
+        log.debug("Récupération de embargo fin ");
         String embargoFin;
         try {
             if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
@@ -127,7 +127,7 @@ public class VerificationDroits {
     }
 
     private String getConfidentialiteFin (Mets tef, String nnt) {
-        log.info("Récupération de confidentialite fin ");
+        log.debug("Récupération de confidentialite fin ");
         String confidentialiteFin;
         try {
             if (!tef.getDmdSec().stream().filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null).findFirst().orElse(null)
