@@ -77,6 +77,16 @@ public class BoutonController {
     }
 
 
+    /**
+     * Ajoute les boutons d'accès aux thèses provenant de l'application STAR.
+     * Il peut exister plusieurs versions de diffusion de la thèse (complète, incomplète) et cett
+     * dernière peut être soumise à des restrictions d'accès, embargo ou confidentialité.
+     * @param responseBoutons
+     * @param restriction
+     * @param these
+     * @param nnt
+     * @throws Exception
+     */
     private void ajouteBoutonsStar (ResponseBoutons responseBoutons, Restriction restriction, These these, String nnt) throws Exception {
 
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
@@ -207,6 +217,15 @@ public class BoutonController {
 
         }
     }
+
+    /**
+     * Ajoute les boutons d'accès aux thèses provenant du Sudoc.
+     * Elles peuvent être disponibles directement en bibliothèque, sous différentes formes : papier, microfiche...
+     * @param responseBoutons
+     * @param restriction
+     * @param these
+     * @param nnt
+     */
     private void ajouteBoutonsSudoc (ResponseBoutons responseBoutons, Restriction restriction, These these, String nnt) {
         Iterator<DmdSec> iterator = these.getTef().getDmdSec().iterator();
         while (iterator.hasNext()) {

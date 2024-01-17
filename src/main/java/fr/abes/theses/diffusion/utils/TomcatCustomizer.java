@@ -6,6 +6,9 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.stereotype.Component;
 
+/**
+ * Classe ajoutée pour pouvoir accepter plus de 100 headers (qui sont envoyés par la fédération d'identité RENATER)
+ */
 @Component
 public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
 
