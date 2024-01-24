@@ -113,7 +113,7 @@ public class BoutonController {
 
             // bouton acces esr
             Bouton bouton = new Bouton();
-            bouton.setLibelle("Accès ESR");
+            bouton.setLibelle("Accès réservé aux membres de l’enseignement supérieur français");
             bouton.setUrl("document/protected/".concat(nnt));
             bouton.setTypeAcces(TypeAcces.ACCES_ESR);
             // validé par le jury / dépôt national
@@ -142,7 +142,7 @@ public class BoutonController {
         if (scenario.equals("cas3") && !restriction.getType().equals(TypeRestriction.CONFIDENTIALITE)) {
 
             Bouton bouton = new Bouton();
-            bouton.setLibelle("Accès ESR");
+            bouton.setLibelle("Accès réservé aux membres de l’enseignement supérieur français");
             bouton.setUrl("document/protected/".concat(nnt));
             bouton.setTypeAcces(TypeAcces.ACCES_ESR);
             // validé par le jury / dépôt national
@@ -184,7 +184,7 @@ public class BoutonController {
 
             // bouton acces esr
             Bouton bouton = new Bouton();
-            bouton.setLibelle("Accès ESR");
+            bouton.setLibelle("Accès réservé aux membres de l’enseignement supérieur français");
             bouton.setUrl("document/protected/".concat(nnt));
             bouton.setTypeAcces(TypeAcces.ACCES_ESR);
             // validé par le jury / dépôt national
@@ -262,7 +262,7 @@ public class BoutonController {
 
             if (dmdSec.getID().contains("EDITION_MICROFICHE")) {
                 Bouton bouton = new Bouton();
-                bouton.setLibelle("Accès en bibliothèque à une copie microfichée");
+                bouton.setLibelle("Accès en bibliothèque à une copie sur microfiches de la thèse");
                 bouton.setUrl(recupereUrlSudoc(dmdSec));
                 bouton.setTypeAcces(TypeAcces.SUDOC);
                 // validé par le jury / reproduction conforme
