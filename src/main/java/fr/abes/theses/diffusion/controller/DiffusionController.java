@@ -40,7 +40,6 @@ public class DiffusionController {
      * @throws Exception
      */
 
-    /*
     @Operation(
             summary = "Renvoie un fichier de thèse (ou une liste HTML de liens si la thèse est constituée de plusieurs fichiers) en accès restreint",
             description = "Renvoie les thèses disponibles pour les membres de l'Enseignement Supérieur et de la Recherche après authentification via la fédération d'identité Renater")
@@ -68,7 +67,7 @@ public class DiffusionController {
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-*/
+
     /**
      * Renvoie les thèses disponibles en accès libre
      * @param nnt
