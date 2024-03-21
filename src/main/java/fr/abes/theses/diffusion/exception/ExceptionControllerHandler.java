@@ -29,7 +29,7 @@ public class ExceptionControllerHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<Object> handleNullPointerException(NullPointerException ex) {
-        String error = "null pointer...";
+        String error = "Fichier indisponible";
         log.debug(ex.getLocalizedMessage());
         return buildResponseEntity(new ApiReturnError(HttpStatus.INTERNAL_SERVER_ERROR, error, ex));
     }

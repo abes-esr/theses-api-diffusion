@@ -63,7 +63,7 @@ public class DiffusionController {
                 (!verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) &&
                         !verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") &&
                         !verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
-            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, true, response), HttpStatus.OK);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
@@ -112,7 +112,7 @@ public class DiffusionController {
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
             // diffusion par l'Abes
-            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, false, response), HttpStatus.OK);
 
         }
 
