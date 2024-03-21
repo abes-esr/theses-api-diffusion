@@ -287,7 +287,7 @@ public class Diffusion {
                         for (String fichier : liste) {
                             String nomFic = fichier.substring(fichier.indexOf("document") + 13)
                                     .replace("\\", "/");
-                            listeFichiers += "<li><a href=\"" + urlPortail + nnt + "/"
+                            listeFichiers += "<li><a href=\"" + urlPortail + "api/v1/document/protected/" + nnt + "/"
                                     + nomFic.replaceAll(" ", "_-_") + "\">" + nomFic + "</a></li>";
                         }
                         listeFichiers += "</ul>";
