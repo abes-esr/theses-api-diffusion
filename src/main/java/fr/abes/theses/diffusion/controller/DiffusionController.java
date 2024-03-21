@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/v1/")
 public class DiffusionController {
 
     @Autowired

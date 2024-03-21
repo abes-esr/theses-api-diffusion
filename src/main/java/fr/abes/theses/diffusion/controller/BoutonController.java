@@ -31,7 +31,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/v1/")
 public class BoutonController {
 
     @Autowired
