@@ -119,6 +119,43 @@ public class DiffusionController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
+
+    /**
+     * Renvoie les thèses stockées à l'abes et disponibles en accès libre
+     * @param nnt
+     * @return
+     * @throws Exception
+     */
+    @Operation(
+            summary = "Renvoie un fichier de thèse stocké à l'Abes et disponible en accès libre",
+            description = "Renvoie les thèses stockées à l'Abes et disponibles en accès libre")
+    @ApiResponse(responseCode = "200", description = "Opération terminée avec succès, le fichier de thèse est renvoyé")
+    @ApiResponse(responseCode = "400", description = "Le format du numéro national de thèse fourni est incorrect")
+    @ApiResponse(responseCode = "403", description = "Accès refusé")
+    @GetMapping(value = "abes/{nnt}")
+    public ResponseEntity<byte[]> documentAbes(
+            @PathVariable
+            @Parameter(name = "nnt", description = "Numéro National de Thèse", example = "2013MON30092") String nnt, HttpServletResponse response) throws Exception {
+
+        if (!service.verifieNnt(nnt)) {
+            log.error("nnt incorrect");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        These these = service.renvoieThese(nnt);
+        String scenario = verificationDroits.getScenario(these.getTef(), nnt);
+
+        if ((scenario.equals("cas1") || scenario.equals("cas2")
+                || scenario.equals("cas3") || scenario.equals("cas4"))
+                && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
+
+            // diffusion par l'Abes
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, false, response), HttpStatus.OK);
+
+        }
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
     /**
      * Renvoie les thèses disponibles en accès restreint avec diffusion intranet établissement
      * @param nnt
