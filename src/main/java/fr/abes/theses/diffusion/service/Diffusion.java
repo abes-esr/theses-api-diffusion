@@ -7,6 +7,7 @@ import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Mets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.xpath.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -251,7 +252,7 @@ public class Diffusion {
 
     }
 
-    public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeAcces, HttpServletResponse response) throws Exception {
+    public byte[] diffusionAbes (Mets tef, String nnt, TypeAcces typeAcces, boolean protege, HttpServletResponse response) throws Exception {
 
         log.debug("diffusionAbes...");
         String codeEtab = "";
@@ -287,8 +288,14 @@ public class Diffusion {
                         for (String fichier : liste) {
                             String nomFic = fichier.substring(fichier.indexOf("document") + 13)
                                     .replace("\\", "/");
-                            listeFichiers += "<li><a href=\"" + urlPortail + nnt + "/"
-                                    + nomFic.replaceAll(" ", "_-_") + "\">" + nomFic + "</a></li>";
+                            if (protege) {
+                                listeFichiers += "<li><a href=\"" + urlPortail + "/api/v1/document/protected/" + nnt + "/"
+                                        + nomFic.replaceAll(" ", "_-_") + "\">" + nomFic + "</a></li>";
+                            }
+                            else {
+                                listeFichiers += "<li><a href=\"" + urlPortail + "/api/v1/document/" + nnt + "/"
+                                        + nomFic.replaceAll(" ", "_-_") + "\">" + nomFic + "</a></li>";
+                            }
                         }
                         listeFichiers += "</ul>";
                         return listeFichiers.getBytes();

@@ -62,8 +62,8 @@ public class DiffusionController {
         if (
                 (!verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) &&
                         !verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") &&
-                !verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
-            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
+                        !verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_ESR, true, response), HttpStatus.OK);
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
@@ -112,7 +112,7 @@ public class DiffusionController {
                 return ResponseEntity.status(HttpStatus.OK).build();
             }
             // diffusion par l'Abes
-            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
+            return new ResponseEntity<>(diffusion.diffusionAbes(these.getTef(), nnt, TypeAcces.ACCES_LIGNE, false, response), HttpStatus.OK);
 
         }
 
@@ -202,6 +202,47 @@ public class DiffusionController {
                 && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
 
             return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, nomFichierAvecCheminLocal, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
+
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+
+    /**
+     * Renvoie le lien de téléchargement du fichier en accès restreint avec diffusion Abes
+     * @param nnt
+     * @return
+     * @throws Exception
+     */
+
+    @Operation(
+            summary = "Fournit un lien d'accès direct au fichier de thèse (ou de l'une de ses annexes) en accès restreint",
+            description = "permet de télécharger le ou les fichiers de la thèse depuis la plateforme Abes après authentification via la fédération d'identité Renater")
+    @ApiResponse(responseCode = "200", description = "Opération terminée avec succès, le fichier de thèse est renvoyé")
+    @ApiResponse(responseCode = "400", description = "Le format du numéro national de thèse fourni est incorrect")
+    @ApiResponse(responseCode = "403", description = "Accès refusé")
+    @GetMapping(value = "document/protected/{nnt}/{nomFichierAvecCheminLocal}")
+    public ResponseEntity<byte[]> accesDirectAuFichierProtected(
+            @PathVariable
+            @Parameter(name = "nnt", description = "Numéro National de Thèse", example = "2013MON30092") String nnt,
+            @PathVariable
+            @Parameter(name = "nomFichierAvecCheminLocal", description = "chemin local vers le fichier de thèse ou de l'une de ses annexes", example = "/0/0/these.pdf")
+            String nomFichierAvecCheminLocal,
+            HttpServletResponse response) throws Exception {
+
+        log.debug("protection passée pour ".concat(nnt));
+        if (!service.verifieNnt(nnt)) {
+            log.error("nnt incorrect");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        These these = service.renvoieThese(nnt);
+
+        // on renvoie le fichier uniquement si le scénario n'est pas cas6, pas cas4 ou s'il y n'y a pas de confidentialité
+        if (
+                (!verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) &&
+                        !verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") &&
+                        !verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
+            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, nomFichierAvecCheminLocal, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
