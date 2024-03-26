@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
@@ -217,13 +218,11 @@ public class DiffusionController {
     @ApiResponse(responseCode = "200", description = "Opération terminée avec succès, redirection sur l'intranet de l'établissement")
     @ApiResponse(responseCode = "400", description = "Le format du numéro national de thèse fourni est incorrect")
     @ApiResponse(responseCode = "403", description = "Accès refusé")
-    @GetMapping(value = "document/{nnt}/{nomFichierAvecCheminLocal}")
+    @GetMapping(value = "document/{nnt}/**")
     public ResponseEntity<byte[]> accesDirectAuFichier(
             @PathVariable
             @Parameter(name = "nnt", description = "Numéro National de Thèse", example = "2013MON30092") String nnt,
-            @PathVariable
-            @Parameter(name = "nomFichierAvecCheminLocal", description = "chemin local vers le fichier de thèse ou de l'une de ses annexes", example = "/0/0/these.pdf")
-            String nomFichierAvecCheminLocal,
+            HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
         if (!service.verifieNnt(nnt)) {
@@ -231,6 +230,7 @@ public class DiffusionController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
+        String tmp = request.getContextPath();
         These these = service.renvoieThese(nnt);
         String scenario = verificationDroits.getScenario(these.getTef(), nnt);
 
@@ -238,7 +238,8 @@ public class DiffusionController {
                 || scenario.equals("cas3") || scenario.equals("cas4"))
                 && verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.AUCUNE)) {
 
-            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, nomFichierAvecCheminLocal, TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
+            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, request.getRequestURI()
+                    .split(request.getContextPath() + "/document/")[1].substring(13), TypeAcces.ACCES_LIGNE, response), HttpStatus.OK);
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
@@ -258,13 +259,11 @@ public class DiffusionController {
     @ApiResponse(responseCode = "200", description = "Opération terminée avec succès, le fichier de thèse est renvoyé")
     @ApiResponse(responseCode = "400", description = "Le format du numéro national de thèse fourni est incorrect")
     @ApiResponse(responseCode = "403", description = "Accès refusé")
-    @GetMapping(value = "document/protected/{nnt}/{nomFichierAvecCheminLocal}")
+    @GetMapping(value = "document/protected/{nnt}/**")
     public ResponseEntity<byte[]> accesDirectAuFichierProtected(
             @PathVariable
             @Parameter(name = "nnt", description = "Numéro National de Thèse", example = "2013MON30092") String nnt,
-            @PathVariable
-            @Parameter(name = "nomFichierAvecCheminLocal", description = "chemin local vers le fichier de thèse ou de l'une de ses annexes", example = "/0/0/these.pdf")
-            String nomFichierAvecCheminLocal,
+            HttpServletRequest request,
             HttpServletResponse response) throws Exception {
 
         log.debug("protection passée pour ".concat(nnt));
@@ -274,12 +273,12 @@ public class DiffusionController {
         }
         These these = service.renvoieThese(nnt);
 
-        // on renvoie le fichier uniquement si le scénario n'est pas cas6, pas cas4 ou s'il y n'y a pas de confidentialité
         if (
                 (!verificationDroits.getScenario(these.getTef(), nnt).equals("cas6")) &&
                         !verificationDroits.getScenario(these.getTef(), nnt).equals("cas4") &&
                         !verificationDroits.getRestrictionsTemporelles(these.getTef(), nnt).getType().equals(TypeRestriction.CONFIDENTIALITE)) {
-            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, nomFichierAvecCheminLocal, TypeAcces.ACCES_ESR, response), HttpStatus.OK);
+            return new ResponseEntity<>(diffusion.diffusionAccesDirectAuFichier(these.getTef(), nnt, request.getRequestURI()
+                    .split(request.getContextPath() + "/protected/")[1].substring(13), TypeAcces.ACCES_ESR, response), HttpStatus.OK);
 
         }
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
