@@ -1,13 +1,12 @@
 package fr.abes.theses.diffusion.service;
 
+import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Identifier;
+import fr.abes.theses.diffusion.model.tef.Mets;
 import fr.abes.theses.diffusion.model.tef.XmlData;
 import fr.abes.theses.diffusion.utils.TypeAcces;
-import fr.abes.theses.diffusion.model.tef.DmdSec;
-import fr.abes.theses.diffusion.model.tef.Mets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.apache.xpath.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,8 +17,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -403,15 +406,23 @@ public class Diffusion {
                 yc.setConnectTimeout(5000);
                 yc.connect();
                 return true;
-            } else {
-                HttpURLConnection.setFollowRedirects(true);
-                HttpURLConnection con = (HttpURLConnection) new URL(URLName).openConnection();
-                con.setConnectTimeout(5000);
-                con.setRequestMethod("HEAD");
+            }
+            else {
+                HttpClient client = HttpClient.newHttpClient();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(URLName))
+                        .method("HEAD", HttpRequest.BodyPublishers.noBody())
+                        .build();
+                HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
+
                 boolean reponse = false;
-                if (con.getResponseCode() == HttpURLConnection.HTTP_OK
-                        || con.getResponseCode() == HttpURLConnection.HTTP_MOVED_TEMP
-                        || con.getResponseCode() == HttpURLConnection.HTTP_MOVED_PERM) {
+                if (response.statusCode() == HttpURLConnection.HTTP_OK
+                        || response.statusCode() == HttpURLConnection.HTTP_MOVED_TEMP
+                        || response.statusCode() == HttpURLConnection.HTTP_MOVED_PERM
+                        || response.statusCode() == HttpURLConnection.HTTP_SEE_OTHER
+                        || response.statusCode() == HttpURLConnection.HTTP_UNAUTHORIZED
+                        || response.statusCode() == HttpURLConnection.HTTP_MOVED_PERM
+                        || response.statusCode() == HttpURLConnection.HTTP_FORBIDDEN) {
                     reponse = true;
                 }
                 return reponse;
