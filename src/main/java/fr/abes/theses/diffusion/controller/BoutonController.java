@@ -1,19 +1,18 @@
 package fr.abes.theses.diffusion.controller;
 
 import fr.abes.theses.diffusion.buttons.*;
-import fr.abes.theses.diffusion.database.Anrt;
+import fr.abes.theses.diffusion.database.Service;
+import fr.abes.theses.diffusion.database.These;
 import fr.abes.theses.diffusion.model.tef.DmdSec;
 import fr.abes.theses.diffusion.model.tef.Identifier;
 import fr.abes.theses.diffusion.service.Diffusion;
+import fr.abes.theses.diffusion.service.VerificationDroits;
 import fr.abes.theses.diffusion.utils.Restriction;
 import fr.abes.theses.diffusion.utils.TypeAcces;
-import fr.abes.theses.diffusion.database.Service;
-import fr.abes.theses.diffusion.database.These;
-import fr.abes.theses.diffusion.service.VerificationDroits;
 import fr.abes.theses.diffusion.utils.TypeRestriction;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -298,16 +298,6 @@ public class BoutonController {
                     }
                 }
             }
-        }
-
-        Anrt anrt = service.findAnrtByNnt(nnt);
-        if (anrt != null) {
-            Bouton bouton = new Bouton();
-            bouton.setLibelle("Achat d'une impression à l'ANRT");
-            bouton.setUrl(anrt.getUrl());
-            bouton.setTypeAcces(TypeAcces.SUDOC);
-            // autres versions
-            responseBoutons.getCategories().get(1).getBoutons().add(bouton);
         }
     }
 

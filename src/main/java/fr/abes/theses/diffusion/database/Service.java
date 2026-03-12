@@ -21,16 +21,6 @@ public class Service {
         return jdbcTemplate.queryForObject(sql, new TheseRowMapper(), nnt);
     }
 
-    public Anrt findAnrtByNnt (String nnt) {
-        try {
-            String sql = "select distinct(url) from ANRT_CORRESP where nnt=?";
-            return jdbcTemplate.queryForObject(sql, new AnrtRowMapper(), nnt);
-        }
-        catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-    }
-
     public These renvoieThese(String nnt) throws Exception {
         if (!verifieNnt(nnt)) {
             throw new Exception("nnt incorrect");
