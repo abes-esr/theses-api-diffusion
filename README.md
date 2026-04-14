@@ -16,7 +16,7 @@ URL publique : [https://theses.fr/api/v1/diffusion/](https://theses.fr/api/v1/di
 
 L'application complète peut être déployée via Docker à l'aide du dépôt https://github.com/abes-esr/theses-docker
 
-## Données exposées par l'API : 
+## Données exposées par l'API
 
 Pour les thèses diffusées en accès libre, l’API :
 * envoie le fichier
@@ -48,4 +48,10 @@ Les services :
 - choisissent la plateforme de diffusion : en priorité les plateformes des établissements puis la plateforme du CCSD (HAL) et enfin la plateforme Abes (dans le corps de chaque controller).
 
 Si la thèse est constituée de plusieurs fichiers, une liste de liens HTML permettant d'accéder à chaque fichier est renvoyée.
+
+## Documentation utilisateur
+
+La documentation utilisateur est fournie au standard OpenAPI : https://theses.fr/api/v1/diffusion/openapi.yaml
+
+Un formulaire pour visualiser cette documentation est disponible sur https://www.data.gouv.fr/dataservices/api-diffusion-des-fichiers-de-theses-sur-theses-fr
 
