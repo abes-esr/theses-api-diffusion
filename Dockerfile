@@ -32,7 +32,4 @@ COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
 # Copie de l'agent OpenTelemetry depuis l'image de build
 COPY --from=build-image /build/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 
-# Configuration du point d'entrée pour inclure l'agent via JAVA_TOOL_OPTIONS
-ENV JAVA_TOOL_OPTIONS="-javaagent:/app/opentelemetry-javaagent.jar"
-
-ENTRYPOINT exec java $JAVA_OPTS -jar /app/theses-api-diffusion.jar
+ENTRYPOINT ["java", "-javaagent:/app/opentelemetry-javaagent.jar", "-jar", "/app/theses-api-diffusion.jar"]
