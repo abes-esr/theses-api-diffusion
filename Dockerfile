@@ -3,10 +3,6 @@
 FROM maven:3-eclipse-temurin-11 AS build-image
 WORKDIR /build/
 
-# Téléchargement de l'agent OpenTelemetry
-ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.3.0/opentelemetry-javaagent.jar /build/opentelemetry.jar
-
-
 # On lance la compilation Java
 # On débute par une mise en cache docker des dépendances Java
 # cf https://www.baeldung.com/ops/docker-cache-maven-dependencies
@@ -29,7 +25,7 @@ WORKDIR /app/
 COPY --from=build-image /build/target/*.jar /app/theses-api-diffusion.jar
 COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
 
-# Copie de l'agent OpenTelemetry depuis l'image de build
-COPY --from=build-image /build/opentelemetry.jar /app/opentelemetry.jar
+# Téléchargement d'une version fixe de l'agent OpenTelemetry pour la reproductibilité
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.3.0/opentelemetry-javaagent.jar /app/opentelemetry.jar
 
-ENTRYPOINT ["java", "-javaagent:/app/opentelemetry.jar", "-jar", "/app/theses-api-diffusion.jar"]
+ENTRYPOINT ["java", "-javaagent:/app/opentelemetry.jar", "-jar", "/app/theses-api-recherche.jar"]
