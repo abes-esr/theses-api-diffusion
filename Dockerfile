@@ -36,4 +36,4 @@ COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
 # Téléchargement d'une version fixe de l'agent OpenTelemetry pour la reproductibilité
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.3.0/opentelemetry-javaagent.jar /app/opentelemetry.jar
 
-ENTRYPOINT ["java", "-javaagent:/app/opentelemetry.jar", "-jar", "/app/theses-api-diffusion.jar"]
+ENTRYPOINT ["java", "-Doracle.jdbc.timezoneAsRegion=false", "-javaagent:/app/opentelemetry.jar", "-jar", "/app/theses-api-diffusion.jar"]
