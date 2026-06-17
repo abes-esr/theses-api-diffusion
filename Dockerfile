@@ -3,6 +3,14 @@
 FROM maven:3-eclipse-temurin-11 AS build-image
 WORKDIR /build/
 
+# Installation et configuration de la locale FR
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt -y install locales
+RUN sed -i '/fr_FR.UTF-8/s/^# //g' /etc/locale.gen && \
+    locale-gen
+ENV LANG fr_FR.UTF-8
+ENV LANGUAGE fr_FR:fr
+ENV LC_ALL fr_FR.UTF-8
+
 # On lance la compilation Java
 # On débute par une mise en cache docker des dépendances Java
 # cf https://www.baeldung.com/ops/docker-cache-maven-dependencies
