@@ -1,0 +1,606 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mets:mets xmlns:mets="http://www.loc.gov/METS/" xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:dcterms="http://purl.org/dc/terms/" xmlns:tef="http://www.abes.fr/abes/documents/tef"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:metsRights="http://cosimo.stanford.edu/sdr/metsrights/"
+    xmlns:mads="http://www.loc.gov/mads/" xmlns:suj="http://www.theses.fr/namespace/sujets"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.abes.fr/abes/documents/tef/recommandation/tef_schemas.xsd">
+    <mets:metsHdr ID="ABES.STAR.THESE_10013.METS_HEADER"
+        CREATEDATE="" LASTMODDATE="2016-05-24T13:18:54Z" RECORDSTATUS="valide">
+        <mets:agent ROLE="CREATOR">
+            <mets:name />
+            <mets:note>Note</mets:note>
+        </mets:agent>
+        <mets:agent ROLE="DISSEMINATOR">
+            <mets:name>ABES</mets:name>
+        </mets:agent>
+        <mets:altRecordID ID="ABES.STAR.THESE_10013.METS_HEADER.ALTERNATE"
+            TYPE="" />
+    </mets:metsHdr>
+    <mets:dmdSec ID="ABES.STAR.THESE_10013.gestionSTAR">
+        <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_gestionSTAR">
+            <mets:xmlData>
+                <star_gestion codeEtab="ABCD" libEtab="Montpellier 3"
+                    ppnEtab="026404702" enProd="oui" ID_THESE="THESE_10013"
+                    scenarioEtab="cas1" etat="WFpostArchivage"
+                    xsi:noNamespaceSchemaLocation="http://www.abes.fr/abes/documents/pth/tef_gestion.xsd">
+                    <traitements scenario="cas1">
+                        <entree type="importMail" date="2010-10-13T09:29:05Z"
+                            agentImport="joel.pollet@univ-montp3.fr"
+                            completudeImport="CORE" />
+                        <maj date="2016-05-24T13:18:54Z" import="non"
+                            SCOL="oui" BIBL="oui" FICH="oui" VALID="oui" />
+                        <facile date="2012-01-23T14:58:01"
+                            indicFacile="OK" trace="" import="non" SCOL="oui"
+                            BIBL="oui" FICH="oui" VALID="oui" />
+                        <ctrlUrl indicCtrlUrl="sansObjet"
+                            erreurUrl="sansObjet" compteIndicCtrlUrlKO="0"
+                            date="" />
+                        <remonteeArchive
+                            indicRemonteeArchive="sansObjet" date=""
+                            trace="" />
+                        <purge indicPurge="sansObjet" date="" />
+                        <invalidation indicInvalidation="sansObjet"
+                            date="" note="" />
+                        <sorties date="">
+                            <cines numeroPAC="226037"
+                                dateCines="2012-01-23T16:16:06Z"
+                                indicCines="OK" trace="" />
+                            <sudoc PPN="157857603" dateSudoc="2012-01-23T16:18:29Z"
+                                indicSudoc="OK" majSudoc="2017-06-15T13:21:50Z"
+                                trace="">
+                                <RCR code="123456789">Bibliothèque bidule</RCR>
+                                <RCR code="456789123">Bibliothèque truc</RCR>
+                                <RCR code="789123456">Bibliothèque machin</RCR>
+                                <EPN />
+                            </sudoc>
+                            <diffusion
+                                urlPerenne="http://www.theses.fr/2010ABCD0097"
+                                conformitePolDiffusion="oui"
+                                typeDiffusion="internet"
+                                restrictionTemporelleType="sansObjet"
+                                restrictionTemporelleFin="">
+                                <etabDiffuseur
+                                    etabDiffuseurPolEtablissement="oui"
+                                    editeurScientifiqueLieu=""
+                                    editeurScientifiqueNom="">
+                                    <urlEtabDiffuseur
+                                        majUrlEtabDiffuseur="">http://www.biu-montpellier.fr/florabium/jsp/nnt.jsp?nnt=2010ABCD0097</urlEtabDiffuseur>
+                                </etabDiffuseur>
+                                <abesDiffuseur
+                                    abesDiffuseurPolEtablissement="non"
+                                    FichEtabDiffAbesIntranet="non"
+                                    indicAbesDiffuseur="OK"
+                                    dateAbesDiffuseur="2012-01-23T16:17:40Z"
+                                    majAbesDiffuseur="2017-06-15T13:22:12Z"
+                                    urlAbesDiffuseur="" />
+                                <ccsd
+                                    ccsdDiffuseurPolEtablissement="non"
+                                    pastel="non" indicCcsd="sansObjet"
+                                    identifiantCcsd="" pwdCcsd=""
+                                    urlCcsd="" numVersion="" dateCcsd=""
+                                    majCcsd="" trace="" />
+                                <autresEtabDiffuseurs />
+                                <oai majOai="2017-05-05T16:02:23Z"
+                                    dateOai="2012-01-23T16:17:42Z"
+                                    indicOai="OK" />
+                            </diffusion>
+                        </sorties>
+                    </traitements>
+                    <workflow etatWF="postAtraiter">
+                        <commentaires nbCommentaires="0" />
+                        <DOCT interventionFicheEtablissement="non"
+                            etatDOCT="nonModifiable" majDOCT="" />
+                        <rolesMD>
+                            <SCOL etatMD="postAtraiter" majMD="2012-05-14T09:59:17"
+                                indicBilan="sansObjet" bilan="">
+                                <notes nbNotes="0">
+                                    <note date="" contenu="" />
+                                </notes>
+                            </SCOL>
+                            <BIBL etatMD="postAtraiter" majMD="2012-05-14T09:59:17"
+                                indicBilan="sansObjet" bilan=""
+                                indicTheseTravaux="non">
+                                <notes nbNotes="0">
+                                    <note date="" contenu="" />
+                                </notes>
+                            </BIBL>
+                            <FICH etatMD="postAtraiter" majMD="2012-05-14T09:59:17"
+                                indicBilan="sansObjet" bilan=""
+                                alerteTheseTravaux="non">
+                                <notes nbNotes="0">
+                                    <note date="" contenu="" />
+                                </notes>
+                            </FICH>
+                        </rolesMD>
+                        <VALID validIndependant="oui" etatVALID="archivee"
+                            majVALID="2012-05-14T09:59:17">
+                            <notes nbNotes="0">
+                                <note date="" contenu="" />
+                            </notes>
+                            <refusValidationIntermediaire
+                                nbRefus="0">
+                                <refus date="" contenu="" SCOL="non"
+                                    FICH="non" BIBL="non" />
+                            </refusValidationIntermediaire>
+                        </VALID>
+                    </workflow>
+                </star_gestion>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:dmdSec ID="ABES.STAR.THESE_10013.DESCRIPTION_BIBLIOGRAPHIQUE">
+        <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_desc_these">
+            <mets:xmlData>
+                <tef:thesisRecord>
+                    <dc:title xml:lang="fr">Changement de cadre
+                        légal dans le secteur social et médico-social et
+                        impacts sur la culture organisationnelle et les
+                        pratiques professionnelles</dc:title>
+                    <dcterms:alternative xml:lang="en">Non
+                        communiqué</dcterms:alternative>
+                    <dc:subject xml:lang="fr">Changements
+                    </dc:subject>
+                    <dc:subject xml:lang="fr">Culture
+                        organisationnelle</dc:subject>
+                    <dc:subject xml:lang="fr">Justice
+                        organisationnelle</dc:subject>
+                    <dc:subject xml:lang="fr">Engagement
+                        organisationnel et comportemental</dc:subject>
+                    <dc:subject xml:lang="en">Changing
+                    </dc:subject>
+                    <dc:subject xml:lang="en">Organizational
+                        culture</dc:subject>
+                    <dc:subject xml:lang="en">Organization justice
+                    </dc:subject>
+                    <dc:subject xml:lang="en">Organizational and
+                        behavior commitment</dc:subject>
+                    <tef:sujetRameau xml:lang="fr">
+                        <tef:vedetteRameauNomCommun>
+                            <tef:elementdEntree
+                                autoriteExterne="027223574"
+                                autoriteSource="Sudoc">Action sociale
+                            </tef:elementdEntree>
+                            <tef:subdivision
+                                autoriteExterne="028457625"
+                                autoriteSource="Sudoc" type="subdivisionDeSujet">Législation
+                            </tef:subdivision>
+                        </tef:vedetteRameauNomCommun>
+                        <tef:vedetteRameauNomCommun>
+                            <tef:elementdEntree
+                                autoriteExterne="028150589"
+                                autoriteSource="Sudoc">Culture d'entreprise
+                            </tef:elementdEntree>
+                            <tef:subdivision
+                                autoriteExterne="027330435"
+                                autoriteSource="Sudoc" type="subdivisionDeSujet">Innovations
+                                technologiques</tef:subdivision>
+                            <tef:subdivision
+                                autoriteExterne="027226794"
+                                autoriteSource="Sudoc" type="subdivisionGeographique">France
+                            </tef:subdivision>
+                        </tef:vedetteRameauNomCommun>
+                    </tef:sujetRameau>
+                    <dcterms:abstract xml:lang="fr">Ce
+                        travail de thèse considère la culture
+                        organisationnelle comme une variable dépendante,
+                        à la croisée d’influences multiples, susceptible
+                        d’être impactée par les changements issus de la
+                        mise en œuvre de la loi du 02 janvier 2002
+                        rénovant l’action sociale et médico-sociale. Il
+                        ne cherche pas à extraire des lois universelles,
+                        mais s’inscrit dans une perspective
+                        idiographique et poursuit un double objectif :
+                        -1- décrire les transformations de la culture
+                        d’un établissement selon le modèle des valeurs
+                        concurrentes de Quinn (Quinn et Cameron, 1983 ;
+                        Quinn et Rohrbaugh, 1983, Cameron et Quinn,
+                        2006), -2- qualifier et quantifier la mise en
+                        œuvre des outils de la loi et leurs impacts sur
+                        la perception des agents à leur égard. Nous
+                        avons donc suivi un établissement a priori
+                        représentatif du secteur durant trois années au
+                        cours desquelles les outils ont été élaborés
+                        puis mis en œuvre. Considérant que le secteur
+                        social et médico-social présentait une culture
+                        professionnelle de type modèle de service public
+                        (Sainsaulieu, 1985, Francfort et al, 1995), nous
+                        postulions que la culture organisationnelle de
+                        cet établissement serait orientée vers le
+                        soutien lors du premier temps de recueil de
+                        données. Nous postulions également qu’elle
+                        s’orienterait progressivement vers la règle avec
+                        la déclinaison des outils de 2002 davantage
+                        représentatifs d’organisations dont la culture
+                        est orientée vers la règle. La recherche met en
+                        évidence que la culture organisationnelle est
+                        composite, que la règle est prégnante dès le
+                        premier temps de recueil de données et plus
+                        valorisée que la dimension soutien. D’autre
+                        part, les cultures professionnelles ainsi que
+                        les préférences personnelles sont orientées vers
+                        le soutien. Au gré de la mise en œuvre des
+                        outils, grâce à des pratiques managériales
+                        considérées comme respectant les principes de la
+                        justice organisationnelle et favorisant le
+                        développement de l’engagement comportemental, on
+                        observe une intégration du profil culturel au
+                        niveau des préférences personnelles et des
+                        cultures professionnelles.</dcterms:abstract>
+                    <dcterms:abstract xml:lang="en">The work
+                        of this thesis considers the organizational
+                        culture as a dependent variable, crossing
+                        multiple influences, possibly impacted by the
+                        changing of the law of January 02nd, 2002
+                        renewing the medical and medical-social action.
+                        Il does not try to extract universal laws, but
+                        joins rather in an idiographic prospect and
+                        pursues a double objective: -1- describe the
+                        transformation of the culture of an
+                        establishment according the model of the
+                        competing values of Quinn (Quinn and Cameron,
+                        1983; Quinn and Rohrbaugh, 1983; Cameron and
+                        Quinn, 2006), -2- qualify and quantify the
+                        implementation of the tools’slaw as well as the
+                        perception of the agents in this respect.
+                        Whereas the social and medical- social sector
+                        presented a professional culture of model type
+                        of public utility ( Sainsaulieu , 1985;
+                        Francfort and al , 1995). For this prospect, we
+                        have observed an institution that we think
+                        representative of this sector during three years
+                        while the tools laws have been elaborated then
+                        implemented. We postulated that the organization
+                        culture of this institution would be directed
+                        towards human relations during the first
+                        collecting data. We postulated also that it will
+                        go progressively toward the rules with the
+                        implementation of the tool’s law: this one is
+                        more representative of organizations that are
+                        guide to the rules values. The research proves
+                        that organizational culture is mixed, that the
+                        rule takes the lead before human relations, as
+                        early as the first collecting data. In another
+                        way, the professional cultures and the personal
+                        preferences are oriented toward human relations.
+                        During the implementation of the tool’s law,
+                        according managerial practices that respect the
+                        principles of organizational justice, and that
+                        favor organizational commitment, we observe an
+                        integration of the cultural pattern on a level
+                        of personal preferences and professional
+                        cultures.</dcterms:abstract>
+                    <dc:type>Electronic Thesis or Dissertation</dc:type>
+                    <dc:type xsi:type="dcterms:DCMIType">Text</dc:type>
+                    <dc:language xsi:type="dcterms:RFC3066">fr</dc:language>
+                </tef:thesisRecord>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:dmdSec
+        ID="ABES.STAR.THESE_10013.VERSION_COMPLETE.DESCRIPTION.EDITION_ARCHIVAGE">
+        <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_desc_edition">
+            <mets:xmlData>
+                <tef:edition>
+                    <dcterms:medium xsi:type="dcterms:IMT">PDF
+                    </dcterms:medium>
+                    <dcterms:extent>2563075</dcterms:extent>
+                    <dc:identifier xsi:type="dcterms:URI">http://www.biu-montpellier.fr/florabium/jsp/nnt.jsp?nnt=2010ABCD0097
+                    </dc:identifier>
+                </tef:edition>
+            </mets:xmlData>
+        </mets:mdWrap>
+    </mets:dmdSec>
+    <mets:amdSec>
+        <mets:techMD ID="ABES.STAR.THESE_10013.ADMINISTRATION">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_admin_these">
+                <mets:xmlData>
+                    <tef:thesisAdmin>
+                        <tef:auteur>
+                            <tef:nom>Barbery</tef:nom>
+                            <tef:prenom>Julie</tef:prenom>
+                            <tef:dateNaissance>1979-08-10
+                            </tef:dateNaissance>
+                            <tef:nationalite scheme="ISO-3166-1">FR
+                            </tef:nationalite>
+                            <tef:autoriteExterne
+                                autoriteSource="LOGIN_LDAP">jbarbery
+                            </tef:autoriteExterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">157856100
+                            </tef:autoriteExterne>
+                        </tef:auteur>
+                        <dc:identifier xsi:type="tef:nationalThesisPID">http://www.theses.fr/2010ABCD0097
+                        </dc:identifier>
+                        <dc:identifier xsi:type="tef:NNT">2010ABCD0097
+                        </dc:identifier>
+                        <dcterms:dateAccepted
+                            xsi:type="dcterms:W3CDTF">2010-09-10</dcterms:dateAccepted>
+                        <tef:thesis.degree>
+                            <tef:thesis.degree.discipline
+                                xml:lang="fr">Psychologie du Travail et des
+                                Organisations
+                            </tef:thesis.degree.discipline>
+                            <tef:thesis.degree.grantor>
+                                <tef:nom>Montpellier 3</tef:nom>
+                                <tef:autoriteExterne
+                                    autoriteSource="Sudoc">026404702
+                                </tef:autoriteExterne>
+                            </tef:thesis.degree.grantor>
+                            <tef:thesis.degree.level>Doctorat
+                            </tef:thesis.degree.level>
+                            <tef:thesis.degree.name
+                                xml:lang="fr">Docteur es
+                            </tef:thesis.degree.name>
+                        </tef:thesis.degree>
+                        <tef:theseSurTravaux>non</tef:theseSurTravaux>
+                        <tef:avisJury>oui</tef:avisJury>
+                        <tef:directeurThese>
+                            <tef:nom>Louche</tef:nom>
+                            <tef:prenom>Claude</tef:prenom>
+                            <tef:autoriteInterne>MADS_DIRECTEUR_DE_THESE_1
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">026995409
+                            </tef:autoriteExterne>
+                        </tef:directeurThese>
+                        <tef:membreJury>
+                            <tef:nom>Louche</tef:nom>
+                            <tef:prenom>Claude</tef:prenom>
+                            <tef:autoriteInterne>MADS_MEMBRE_DU_JURY_1
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">026995409
+                            </tef:autoriteExterne>
+                        </tef:membreJury>
+                        <tef:membreJury>
+                            <tef:nom>Vonthron</tef:nom>
+                            <tef:prenom>Anne-Marie</tef:prenom>
+                            <tef:autoriteInterne>MADS_MEMBRE_DU_JURY_2
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">155706632
+                            </tef:autoriteExterne>
+                        </tef:membreJury>
+                        <tef:membreJury>
+                            <tef:nom>Doutre</tef:nom>
+                            <tef:prenom>Élisabeth</tef:prenom>
+                            <tef:autoriteInterne>MADS_MEMBRE_DU_JURY_3
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">034580883
+                            </tef:autoriteExterne>
+                        </tef:membreJury>
+                        <tef:membreJury>
+                            <tef:nom>Battistelli</tef:nom>
+                            <tef:prenom>Adalgisa</tef:prenom>
+                            <tef:autoriteInterne>MADS_MEMBRE_DU_JURY_4
+                            </tef:autoriteInterne>
+                        </tef:membreJury>
+                        <tef:membreJury>
+                            <tef:nom>Mignacca</tef:nom>
+                            <tef:prenom>Gilbert</tef:prenom>
+                            <tef:autoriteInterne>MADS_MEMBRE_DU_JURY_5
+                            </tef:autoriteInterne>
+                        </tef:membreJury>
+                        <tef:rapporteur>
+                            <tef:nom>Vonthron</tef:nom>
+                            <tef:prenom>Anne-Marie</tef:prenom>
+                            <tef:autoriteInterne>MADS_RAPPORTEUR_1
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">155706632
+                            </tef:autoriteExterne>
+                        </tef:rapporteur>
+                        <tef:rapporteur>
+                            <tef:nom>Doutre</tef:nom>
+                            <tef:prenom>Élisabeth</tef:prenom>
+                            <tef:autoriteInterne>MADS_RAPPORTEUR_2
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">034580883
+                            </tef:autoriteExterne>
+                        </tef:rapporteur>
+                        <tef:ecoleDoctorale>
+                            <tef:nom>École doctorale 60, Territoires,
+                                Temps, Sociétés et Développement
+                                (Montpellier ; ....-2014)</tef:nom>
+                            <tef:autoriteInterne>MADS_ECOLE_DOCTORALE_1
+                            </tef:autoriteInterne>
+                            <tef:autoriteExterne
+                                autoriteSource="Sudoc">147302617
+                            </tef:autoriteExterne>
+                        </tef:ecoleDoctorale>
+                        <tef:oaiSetSpec>ddc:150</tef:oaiSetSpec>
+                        <tef:MADSAuthority
+                            authorityID="MADS_DIRECTEUR_DE_THESE_1"
+                            type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Louche
+                                </mads:namePart>
+                                <mads:namePart type="given">Claude
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_MEMBRE_DU_JURY_1" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Louche
+                                </mads:namePart>
+                                <mads:namePart type="given">Claude
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_MEMBRE_DU_JURY_2" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Vonthron
+                                </mads:namePart>
+                                <mads:namePart type="given">Anne-marie
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_MEMBRE_DU_JURY_3" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Doutre
+                                </mads:namePart>
+                                <mads:namePart type="given">Elisabeth
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_MEMBRE_DU_JURY_4" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Battistelli
+                                </mads:namePart>
+                                <mads:namePart type="given">Adalgisa
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_MEMBRE_DU_JURY_5" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Mignacca
+                                </mads:namePart>
+                                <mads:namePart type="given">Gilbert
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_RAPPORTEUR_1" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Vonthron
+                                </mads:namePart>
+                                <mads:namePart type="given">Anne-marie
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_RAPPORTEUR_2" type="personal">
+                            <tef:personMADS>
+                                <mads:namePart type="family">Doutre
+                                </mads:namePart>
+                                <mads:namePart type="given">Elisabeth
+                                </mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                        <tef:MADSAuthority
+                            authorityID="MADS_ECOLE_DOCTORALE_1" type="corporate">
+                            <tef:personMADS>
+                                <mads:namePart type="family">École
+                                    doctorale 60, Territoires, Temps,
+                                    Sociétés et Développement
+                                    (Montpellier)</mads:namePart>
+                            </tef:personMADS>
+                        </tef:MADSAuthority>
+                    </tef:thesisAdmin>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:techMD>
+        <mets:techMD
+            ID="ABES.STAR.THESE_10013.VERSION_COMPLETE.EDITION_ARCHIVAGE.TECH_FICHIER.DOSSIER_1.DOSSIER_1.FICHIER_1">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_tech_fichier">
+                <mets:xmlData>
+                    <tef:meta_fichier>
+                        <tef:encodage>ASCII</tef:encodage>
+                        <tef:formatFichier>PDF</tef:formatFichier>
+                        <tef:taille>2563075</tef:taille>
+                    </tef:meta_fichier>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:techMD>
+        <mets:rightsMD ID="ABES.STAR.THESE_10013.DROITS_UNIVERSITE">
+            <mets:mdWrap MDTYPE="OTHER"
+                OTHERMDTYPE="tef_droits_etablissement_these">
+                <mets:xmlData>
+                    <metsRights:RightsDeclarationMD
+                        RIGHTSCATEGORY="CONTRACTUAL">
+                        <metsRights:Context
+                            CONTEXTCLASS="GENERAL PUBLIC">
+                            <metsRights:Permissions
+                                DISPLAY="true" DUPLICATE="true" PRINT="true"
+                                COPY="true" MODIFY="false" DELETE="false" />
+                        </metsRights:Context>
+                        <metsRights:Context
+                            CONTEXTCLASS="INSTITUTIONAL AFFILIATE">
+                            <metsRights:Permissions
+                                DISPLAY="true" DUPLICATE="true" PRINT="true"
+                                COPY="true" MODIFY="false" DELETE="false" />
+                        </metsRights:Context>
+                    </metsRights:RightsDeclarationMD>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:rightsMD ID="ABES.STAR.THESE_10013.DROITS_DOCTORANT">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_droits_auteur_these">
+                <mets:xmlData>
+                    <metsRights:RightsDeclarationMD
+                        RIGHTSCATEGORY="CONTRACTUAL">
+                        <metsRights:Context
+                            CONTEXTCLASS="GENERAL PUBLIC">
+                            <metsRights:Permissions
+                                DISPLAY="true" DUPLICATE="true" PRINT="true"
+                                COPY="true" MODIFY="false" DELETE="false" />
+                        </metsRights:Context>
+                        <metsRights:Context
+                            CONTEXTCLASS="INSTITUTIONAL AFFILIATE">
+                            <metsRights:Permissions
+                                DISPLAY="true" DUPLICATE="true" PRINT="true"
+                                COPY="true" MODIFY="false" DELETE="false" />
+                        </metsRights:Context>
+                    </metsRights:RightsDeclarationMD>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+        <mets:rightsMD ID="ABES.STAR.THESE_10013.VERSION_COMPLETE.DROITS">
+            <mets:mdWrap MDTYPE="OTHER" OTHERMDTYPE="tef_droits_version">
+                <mets:xmlData>
+                    <metsRights:RightsDeclarationMD
+                        RIGHTSCATEGORY="CONTRACTUAL">
+                        <metsRights:Context
+                            CONTEXTCLASS="GENERAL PUBLIC">
+                            <metsRights:Permissions
+                                DISPLAY="true" DUPLICATE="true" PRINT="true"
+                                COPY="true" MODIFY="false" DELETE="false" />
+                        </metsRights:Context>
+                        <metsRights:Context
+                            CONTEXTCLASS="INSTITUTIONAL AFFILIATE">
+                            <metsRights:Permissions
+                                DISPLAY="true" DUPLICATE="true" PRINT="true"
+                                COPY="true" MODIFY="false" DELETE="false" />
+                        </metsRights:Context>
+                    </metsRights:RightsDeclarationMD>
+                </mets:xmlData>
+            </mets:mdWrap>
+        </mets:rightsMD>
+    </mets:amdSec>
+    <mets:fileSec>
+        <mets:fileGrp USE="archive_et_diffusion"
+            ID="ABES.STAR.THESE_10013.VERSION_COMPLETE.EDITION_ARCHIVAGE.FILEGRP">
+            <mets:file
+                ID="ABES.STAR.THESE_10013.VERSION_COMPLETE.EDITION_ARCHIVAGE.DOSSIER_1.DOSSIER_1.FICHIER_1"
+                ADMID="ABES.STAR.THESE_10013.VERSION_COMPLETE.EDITION_ARCHIVAGE.TECH_FICHIER.DOSSIER_1.DOSSIER_1.FICHIER_1"
+                SEQ="1">
+                <mets:FLocat LOCTYPE="URL"
+                    xlink:href="ABCD/THESE_10013/document/0/0/2010_barbery_arch.pdf" />
+            </mets:file>
+        </mets:fileGrp>
+    </mets:fileSec>
+    <mets:structMap TYPE="logical">
+        <mets:div TYPE="THESE" CONTENTIDS="CONTENTIDS.ABES.STAR.THESE_10013"
+            DMDID="ABES.STAR.THESE_10013.DESCRIPTION_BIBLIOGRAPHIQUE"
+            ADMID="ABES.STAR.THESE_10013.ADMINISTRATION ABES.STAR.THESE_10013.DROITS_UNIVERSITE ABES.STAR.THESE_10013.DROITS_DOCTORANT">
+            <mets:div TYPE="VERSION_COMPLETE"
+                CONTENTIDS="CONTENTIDS.ABES.STAR.THESE_10013.ABES.STAR.THESE_10013.VERSION_COMPLETE"
+                ADMID="ABES.STAR.THESE_10013.VERSION_COMPLETE.DROITS">
+                <mets:div TYPE="EDITION"
+                    CONTENTIDS="CONTENTIDS.ABES.STAR.THESE_10013.VERSION_COMPLETE.EDITION_ARCHIVAGE"
+                    DMDID="ABES.STAR.THESE_10013.VERSION_COMPLETE.DESCRIPTION.EDITION_ARCHIVAGE">
+                    <mets:fptr
+                        FILEID="ABES.STAR.THESE_10013.VERSION_COMPLETE.EDITION_ARCHIVAGE.FILEGRP" />
+                </mets:div>
+            </mets:div>
+        </mets:div>
+    </mets:structMap>
+</mets:mets>
