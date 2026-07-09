@@ -1,6 +1,7 @@
 package fr.abes.theses.diffusion.utils;
 
 import fr.abes.theses.diffusion.model.tef.Mets;
+import fr.abes.theses.diffusion.model.tef.XmlData;
 import fr.abes.theses.diffusion.service.VerificationDroits;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,7 @@ class XMLJsonMarshallingTest {
             String scenario = verificationDroits.getScenario(mets, "2010ABCD0097");
             assertEquals("cas1", scenario);
 
-            var starGestion = mets.getDmdSec().stream()
+            XmlData.StarGestion starGestion = mets.getDmdSec().stream()
                     .filter(d -> d.getMdWrap().getXmlData().getStarGestion() != null)
                     .findFirst()
                     .orElseThrow()
