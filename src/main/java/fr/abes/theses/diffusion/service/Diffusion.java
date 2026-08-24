@@ -22,6 +22,7 @@ import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -408,9 +409,12 @@ public class Diffusion {
                 return true;
             }
             else {
-                HttpClient client = HttpClient.newHttpClient();
+                HttpClient client = HttpClient.newBuilder()
+                        .connectTimeout(Duration.ofSeconds(5))
+                        .build();
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(URLName))
+                        .timeout(Duration.ofSeconds(5))
                         .method("HEAD", HttpRequest.BodyPublishers.noBody())
                         .build();
                 HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
