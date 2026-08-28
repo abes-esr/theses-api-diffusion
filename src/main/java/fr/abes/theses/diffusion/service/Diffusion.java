@@ -6,12 +6,11 @@ import fr.abes.theses.diffusion.model.tef.Mets;
 import fr.abes.theses.diffusion.model.tef.XmlData;
 import fr.abes.theses.diffusion.utils.TypeAcces;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +22,9 @@ import java.net.URLConnection;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -99,7 +100,7 @@ public class Diffusion {
             redirectionSurUrl(response, dryRun, urlEtab);
         }
         catch (IOException e) {
-                log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
+            log.error("Erreur lors de la redirection vers l'url de l'établissement : ".concat(e.toString()));
         }
     }
 
@@ -408,9 +409,12 @@ public class Diffusion {
                 return true;
             }
             else {
-                HttpClient client = HttpClient.newHttpClient();
+                HttpClient client = HttpClient.newBuilder()
+                        .connectTimeout(Duration.ofSeconds(5))
+                        .build();
                 HttpRequest request = HttpRequest.newBuilder()
                         .uri(URI.create(URLName))
+                        .timeout(Duration.ofSeconds(5))
                         .method("HEAD", HttpRequest.BodyPublishers.noBody())
                         .build();
                 HttpResponse<Void> response = client.send(request, HttpResponse.BodyHandlers.discarding());
@@ -442,7 +446,7 @@ public class Diffusion {
         try {
 
             String loginPassword = loginTel + ":" + pwdTel;
-            byte[] authEncBytes = Base64.encodeBase64(loginPassword.getBytes());
+            byte[] authEncBytes = Base64.getEncoder().encode(loginPassword.getBytes());
             String httpBasicAuthentication = new String(authEncBytes);
 
             URL url = new URL("http://" + apiTel + "/sword/tel/" + idTel);

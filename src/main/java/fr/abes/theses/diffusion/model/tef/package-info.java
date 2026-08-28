@@ -5,5 +5,5 @@
 // Généré le : 2023.09.29 à 06:05:38 PM CEST 
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "http://www.abes.fr/abes/documents/tef", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "http://www.abes.fr/abes/documents/tef", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package fr.abes.theses.diffusion.model.tef;
