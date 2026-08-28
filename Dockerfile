@@ -1,6 +1,6 @@
 ###
 # Image pour la compilation
-FROM maven:3-eclipse-temurin-11 AS build-image
+FROM maven:3-eclipse-temurin-21 AS build-image
 WORKDIR /build/
 
 # On lance la compilation Java
@@ -20,7 +20,7 @@ RUN mvn --batch-mode -e \
 ###
 # Image pour le module theses-diffusion
 
-FROM eclipse-temurin:11-jre AS api-diffusion-image
+FROM eclipse-temurin:21-jre AS api-diffusion-image
 WORKDIR /app/
 COPY --from=build-image /build/target/*.jar /app/theses-api-diffusion.jar
 COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
@@ -28,4 +28,4 @@ COPY --from=build-image /74979_GERARDIN_2018_archivage.pdf /
 # Téléchargement d'une version fixe de l'agent OpenTelemetry pour la reproductibilité
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.3.0/opentelemetry-javaagent.jar /app/opentelemetry.jar
 
-ENTRYPOINT exec java $JAVA_OPTS -javaagent:/app/opentelemetry.jar -jar /app/theses-api-diffusion.jar
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -javaagent:/app/opentelemetry.jar -jar /app/theses-api-diffusion.jar"]
